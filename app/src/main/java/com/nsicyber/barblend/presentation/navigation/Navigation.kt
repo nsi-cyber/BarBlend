@@ -1,6 +1,8 @@
 package com.nsicyber.barblend.presentation.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 
 
 object Destination {
@@ -13,21 +15,34 @@ object Destination {
 
 }
 
+fun NavOptionsBuilder.popUpToTop(navController: NavController) {
+    popUpTo(navController.currentBackStackEntry?.destination?.route ?: return) {
+        inclusive = true
+    }
+}
+
 class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToFavorites() {
-        navController.navigate(Destination.FAVORITES)
+        navController.navigate(Destination.FAVORITES){
+            popUpToTop(navController)
+        }
     }
 
     fun navigateToSearch() {
-        navController.navigate(Destination.SEARCH)
+        navController.navigate(Destination.SEARCH){
+            popUpToTop(navController)
+        }
     }
+
     fun navigateToBack() {
         navController.popBackStack()
     }
 
     fun navigateToExplore() {
-        navController.navigate(Destination.EXPLORE)
+        navController.navigate(Destination.EXPLORE) {
+            popUpToTop(navController)
+        }
     }
 
     fun navigateToCocktailDetail(id: String) {

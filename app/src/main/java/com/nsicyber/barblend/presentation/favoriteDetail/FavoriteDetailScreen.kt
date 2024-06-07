@@ -84,9 +84,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoriteDetailScreen(    navAction: NavigationActions,
-
-                             cocktailId: String?,
+fun FavoriteDetailScreen(
+    navAction: NavigationActions,
+    cocktailId: String?,
     viewModel: FavoriteDetailScreenViewModel = hiltViewModel<FavoriteDetailScreenViewModel>(),
 ) {
     val cocktails by viewModel.favoriteDetailScreenState.collectAsState(
@@ -102,8 +102,8 @@ fun FavoriteDetailScreen(    navAction: NavigationActions,
         viewModel.getCocktailDetail(cocktailId)
     }
     LaunchedEffect(cocktails.isRemoved) {
-if(cocktails.isRemoved==true)
-    navAction.navigateToBack()
+        if (cocktails.isRemoved)
+            navAction.navigateToBack()
     }
 
 
@@ -166,7 +166,7 @@ if(cocktails.isRemoved==true)
                             .padding(16.dp)
                             .clip(RoundedCornerShape(20.dp))
                             .clickable {
-                                    viewModel.onEvent(FavoriteDetailScreenEvent.RemoveFromFavorites)
+                                viewModel.onEvent(FavoriteDetailScreenEvent.RemoveFromFavorites)
 
                             }
                             .size(64.dp)
@@ -220,7 +220,7 @@ if(cocktails.isRemoved==true)
 
                             LazyHorizontalStaggeredGrid(
                                 contentPadding = PaddingValues(start = 16.dp),
-                                modifier = Modifier.height(84.dp),
+                                modifier = Modifier.height(72.dp),
                                 rows = StaggeredGridCells.Fixed(2)
                             ) {
                                 items(
@@ -268,7 +268,7 @@ if(cocktails.isRemoved==true)
                         }
                     }
 
-                    cocktails.data.cocktailDetail?.first()?.suggestion?.let {suggestionText->
+                    cocktails.data.cocktailDetail?.first()?.suggestion?.let { suggestionText ->
                         if (suggestionText.isNotBlank()) {
                             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
                                 Text(

@@ -43,14 +43,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.Lifecycle
-fun isInternetAvailable(context: Context): Boolean {
-    val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val activeNetwork = connectivityManager.activeNetwork ?: return false
-    val networkCapabilities =
-        connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-    return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-}
+
+
 
 sealed class BottomNavItem(var title: String, var icon: Int, var route: String) {
     data object Explore : BottomNavItem("Explore", R.drawable.ic_menu_explore, Destination.EXPLORE)
@@ -111,8 +105,7 @@ fun BackPressHandler(
 
 
 @Composable
-fun NavigationGraph(
-    context: Context,
+fun NavigationGraph( isConnected: Boolean,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = Destination.SPLASH,
@@ -123,15 +116,6 @@ fun NavigationGraph(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination?.route
 
-    var isConnected by remember { mutableStateOf(isInternetAvailable(context)) }
-
-
-
-
-
-    LaunchedEffect(Unit) {
-        isConnected = isInternetAvailable(context)
-    }
 
     val showBottomBar =
         currentDestination in listOf(
@@ -201,6 +185,17 @@ fun NavigationGraph(
                 val cocktailId = navBackStackEntry.arguments?.getString("id")
                 FavoriteDetailScreen(navAction = navActions, cocktailId = cocktailId)
             }
+
+
+            if (!isConnected && currentDestination in listOf(
+                    Destination.EXPLORE,
+                    Destination.SEARCH
+                )
+            )
+            {
+                navActions.navigateToFavorites()
+            }
+
         }
     }
 

@@ -256,7 +256,7 @@ fun CocktailDetailScreen(
 
                             LazyHorizontalStaggeredGrid(
                                 contentPadding = PaddingValues(start = 16.dp),
-                                modifier = Modifier.height(84.dp),
+                                modifier = Modifier.height(72.dp),
                                 rows = StaggeredGridCells.Fixed(2)
                             ) {
                                 items(

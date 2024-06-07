@@ -82,7 +82,7 @@ fun PopularCocktailCardView(
                 )
             }
             LazyHorizontalStaggeredGrid(
-                modifier = Modifier.height(84.dp),
+                modifier = Modifier.height(72.dp),
                 rows = StaggeredGridCells.Fixed(2)
             ) {
                 items(model.tags?.size ?: 0) { index ->
@@ -110,7 +110,7 @@ fun KeywordCardItem(
         Text(
             text = data.orEmpty(),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onPrimary, textAlign = TextAlign.Center
         )
     }
 }
