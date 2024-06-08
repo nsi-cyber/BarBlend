@@ -1,9 +1,7 @@
 package com.nsicyber.barblend.domain.useCase.network
 
 import com.nsicyber.barblend.common.ApiResult
-import com.nsicyber.barblend.data.remote.model.CocktailRemote
 import com.nsicyber.barblend.data.remote.model.CocktailResponse
-import com.nsicyber.barblend.domain.repository.ApiRepository
 import com.nsicyber.barblend.domain.repository.DataRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -105,6 +106,13 @@ dependencies {
 
 
     annotationProcessor(libs.compiler)
+
+
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation (libs.androidx.datastore.preferences)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation(libs.androidx.startup.runtime)
+
 }
 /*
 kapt {

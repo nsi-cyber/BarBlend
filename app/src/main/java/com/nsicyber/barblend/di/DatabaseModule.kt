@@ -28,7 +28,6 @@ object DatabaseModule {
     }
 
 
-
     @Provides
     fun provideCocktailDao(cocktailDatabase: CocktailDatabase): CocktailsDao {
         return cocktailDatabase.cocktailsDao()

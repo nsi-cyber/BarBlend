@@ -2,7 +2,6 @@ package com.nsicyber.barblend.presentation.favoriteDetail
 
 
 import com.nsicyber.barblend.data.model.CocktailModel
-import com.nsicyber.barblend.presentation.detail.BottomSheetData
 
 
 data class FavoriteDetailScreenState(

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nsicyber.barblend.common.ApiResult
 import com.nsicyber.barblend.data.toModel
-import com.nsicyber.barblend.domain.useCase.database.GetRecentCocktailsUseCase
 import com.nsicyber.barblend.domain.useCase.network.GetLatestCocktailsUseCase
 import com.nsicyber.barblend.domain.useCase.network.GetPopularCocktailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

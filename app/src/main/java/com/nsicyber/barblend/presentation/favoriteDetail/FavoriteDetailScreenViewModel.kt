@@ -6,14 +6,7 @@ import com.nsicyber.barblend.common.ApiResult
 import com.nsicyber.barblend.data.toFavLocal
 import com.nsicyber.barblend.data.toModel
 import com.nsicyber.barblend.domain.useCase.database.GetCocktailDetailsUseCase
-import com.nsicyber.barblend.domain.useCase.database.IsFavoriteCocktailUseCase
 import com.nsicyber.barblend.domain.useCase.database.RemoveCocktailUseCase
-import com.nsicyber.barblend.domain.useCase.database.SaveToFavoriteUseCase
-import com.nsicyber.barblend.domain.useCase.network.GetCocktailByIdUseCase
-import com.nsicyber.barblend.presentation.detail.BottomSheetState
-import com.nsicyber.barblend.presentation.detail.CocktailDetailScreenEvent
-import com.nsicyber.barblend.presentation.detail.CocktailDetailScreenState
-import com.nsicyber.barblend.presentation.detail.isContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

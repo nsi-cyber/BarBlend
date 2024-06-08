@@ -1,10 +1,8 @@
 package com.nsicyber.barblend.data.repository
 
 import com.nsicyber.barblend.common.ApiResult
-import com.nsicyber.barblend.data.local.dao.CocktailsDao
 import com.nsicyber.barblend.data.local.entity.CocktailFavoriteLocal
 import com.nsicyber.barblend.data.local.entity.CocktailLocal
-import com.nsicyber.barblend.data.model.CocktailModel
 import com.nsicyber.barblend.data.remote.model.CocktailResponse
 import com.nsicyber.barblend.data.toLocal
 import com.nsicyber.barblend.domain.repository.ApiRepository

@@ -5,12 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nsicyber.barblend.common.ApiResult
 import com.nsicyber.barblend.data.toModel
 import com.nsicyber.barblend.domain.useCase.database.GetRecentCocktailsUseCase
-import com.nsicyber.barblend.domain.useCase.database.RemoveCocktailUseCase
-import com.nsicyber.barblend.domain.useCase.network.GetLatestCocktailsUseCase
-import com.nsicyber.barblend.domain.useCase.network.GetPopularCocktailsUseCase
 import com.nsicyber.barblend.domain.useCase.network.SearchCocktailByNameUseCase
-import com.nsicyber.barblend.presentation.explore.ExploreScreenState
-import com.nsicyber.barblend.presentation.explore.isContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
