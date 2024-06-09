@@ -9,8 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -18,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.nsicyber.barblend.common.InternetConnectionCallback
 import com.nsicyber.barblend.common.InternetConnectionObserver
 import com.nsicyber.barblend.presentation.navigation.NavigationGraph
+import com.nsicyber.barblend.ui.theme.BarBlendTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -39,14 +38,12 @@ class MainActivity : ComponentActivity(), InternetConnectionCallback {
             }
 
         setContent {
-            isConnected?.let { connected ->
-                NavigationGraph(isConnected = connected)
-            } ?: run {
-                // Display a loading screen or a splash screen
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    // Add your loading screen or splash screen here
+            BarBlendTheme {
+                isConnected?.let { connected ->
+                    NavigationGraph(isConnected = connected)
                 }
             }
+
         }
     }
 

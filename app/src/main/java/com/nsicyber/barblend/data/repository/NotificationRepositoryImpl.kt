@@ -2,10 +2,13 @@ package com.nsicyber.barblend.data.repository
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.nsicyber.barblend.MainActivity
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.domain.repository.NotificationRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -25,19 +28,29 @@ class NotificationRepositoryImpl @Inject constructor(
     }
 
     override fun pushNotification() {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+
         val notification = NotificationCompat.Builder(context, channelId)
-            .setContentTitle("Title")
-            .setContentText("This is a notification")
+            .setContentTitle("Great News!")
+            .setContentText("There are new cocktails in the app")
             .setSmallIcon(R.drawable.ic_menu_explore)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
             .build()
         Log.d("pushNotification(): ", "Notification")
         NotificationManagerCompat.from(context).notify(1, notification)
     }
 
     private fun createNotificationChannel() {
-        val name = "Notification Channel"
-        val descriptionText = "This is a notification channel"
+        val name = "BarBlendChannel"
+        val descriptionText = "This is the BarBlend notification channel"
         val importance = NotificationManager.IMPORTANCE_HIGH
         val channel = NotificationChannel(channelId, name, importance).apply {
             description = descriptionText

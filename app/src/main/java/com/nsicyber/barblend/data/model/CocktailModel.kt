@@ -11,5 +11,4 @@ val suggestion: String?=null,
 val ingredients: List<IngredientModel?>?=null,
 val instructions: String?=null,
 val tags: List<String>?=null,
-val timestamp: Long = System.currentTimeMillis()
-)
+val timestamp: Long = System.currentTimeMillis())

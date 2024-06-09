@@ -30,6 +30,7 @@ import com.nsicyber.barblend.presentation.detail.CocktailDetailScreen
 import com.nsicyber.barblend.presentation.explore.ExploreScreen
 import com.nsicyber.barblend.presentation.favoriteDetail.FavoriteDetailScreen
 import com.nsicyber.barblend.presentation.favoriteList.FavoriteListScreen
+import com.nsicyber.barblend.presentation.randomCocktail.RandomDetailScreen
 import com.nsicyber.barblend.presentation.search.SearchScreen
 import com.nsicyber.barblend.presentation.splash.SplashScreen
 
@@ -152,6 +153,10 @@ fun NavigationGraph( isConnected: Boolean,
                 FavoriteListScreen(navActions)
 
 
+            }
+
+            composable(route = Destination.RANDOM_DETAIL) {
+                RandomDetailScreen()
             }
 
             composable(

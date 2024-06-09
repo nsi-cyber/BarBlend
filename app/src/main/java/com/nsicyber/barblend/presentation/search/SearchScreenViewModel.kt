@@ -110,10 +110,11 @@ class SearchScreenViewModel @Inject constructor(
         when (event) {
             is SearchScreenEvent.Search -> searchWithDebounce(event.text)
             is SearchScreenEvent.SetEmpty -> setStateEmpty()
+            SearchScreenEvent.StartPage -> getRecent()
         }
     }
 
-    fun getRecent() {
+    private fun getRecent() {
         viewModelScope.launch {
 
 

@@ -5,7 +5,6 @@ import androidx.work.Configuration
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.nsicyber.barblend.workers.NotificationWorker
@@ -19,14 +18,11 @@ import javax.inject.Inject
 class BarBlendApplication : Application(), Configuration.Provider {
 
 
-
-
     @Inject
     lateinit var workerFactory: NotificationWorkerFactory
 
     @Inject
     lateinit var workManager: WorkManager
-
 
 
     override val workManagerConfiguration: Configuration
@@ -36,22 +32,19 @@ class BarBlendApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        val constraints =
-            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-
-        val periodicWorkRequest: PeriodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            15, TimeUnit.SECONDS
-        )
-            .setConstraints(constraints)
-            .build()
 
         workManager.enqueueUniquePeriodicWork(
             "NotificationWorker",
             ExistingPeriodicWorkPolicy.REPLACE,
-            periodicWorkRequest
+            PeriodicWorkRequestBuilder<NotificationWorker>(
+                15, TimeUnit.SECONDS
+            )
+                .setConstraints(
+                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+                )
+                .build()
         )
     }
-
 
 
 }

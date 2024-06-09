@@ -33,6 +33,7 @@ class FavoriteListScreenViewModel @Inject constructor(
     fun onEvent(event: FavoriteListScreenEvent) {
         when (event) {
             is FavoriteListScreenEvent.Remove -> removeFromFavorite(event.model)
+            FavoriteListScreenEvent.StartPage -> getFavorites()
         }
     }
 
@@ -62,7 +63,7 @@ class FavoriteListScreenViewModel @Inject constructor(
     }
 
 
-    fun getFavorites() {
+    private fun getFavorites() {
         viewModelScope.launch {
             getFavoriteCocktailsUseCase().onEach { result ->
                 when (result) {
@@ -87,7 +88,7 @@ class FavoriteListScreenViewModel @Inject constructor(
                     is ApiResult.Success -> {
                         _favoriteListScreenState.update { state ->
                             state.copy(isLoading = false, data = state.data.copy(
-                                favoriteCocktails = result.data?.map { it.toModel()}
+                                favoriteCocktails = result.data?.map { it.toModel()}?.asReversed()
                             ))
                         }
 

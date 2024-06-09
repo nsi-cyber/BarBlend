@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -82,219 +83,219 @@ fun SearchScreen(
 
 
     LaunchedEffect(Unit) {
-        viewModel.getRecent()
+        viewModel.onEvent(SearchScreenEvent.StartPage)
     }
 
 
 
-Box {
+    Box {
 
 
         Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 32.dp)
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 32.dp)
-                .padding(horizontal = 16.dp)
-                .shadow(4.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(Color.White)
-        )
-        {
-            Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-
-                    TextField(
-                        singleLine = true,
-                        maxLines = 1,
-                        modifier = Modifier
-                            .focusRequester(focusRequester)
-                            .background(color = Color.White)
-                            .fillMaxWidth(0.9f),
-                        value = textState.value,
-                        onValueChange = { value ->
-                            textState.value = value
-                        },
-                        colors = TextFieldDefaults.textFieldColors(
-                            cursorColor = Color.Black,
-                            focusedIndicatorColor = Color.Transparent,
-                            containerColor = Color.White,
-                            disabledTextColor = Color.Black,
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black
-                        ),
-                    )
-
-
-                    Image(
-                        modifier = Modifier
-                            .weight(0.1f)
-                            .size(24.dp)
-                            .clickable {
-                                if (textState.value.text.isNotBlank()) textState.value =
-                                    TextFieldValue()
-
-
-                            },
-                        painter = if (textState.value.text.isNotBlank()) painterResource(R.drawable.ic_cross)
-                        else painterResource(
-                            R.drawable.ic_search
-                        ),
-                        contentDescription = "Search Icon",
-                    )
-                }
-                Box(Modifier.height(3.dp)) {
-                    if (cocktails.isSearchLoading)
-                        LinearProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(3.dp)
-                        )
-                }
-
-            }
-
-
-        }
-
-
-
-
-
- if (cocktails.data.searchCocktails == null) {
-//recent cocktails
-            Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
-                Text(
-                    text = "Recently",
-                    color = Color.Gray,
-                    fontSize = 22.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "Viewed",
-                    fontSize = 28.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            if (cocktails.data.recentCocktails?.isEmpty() == true) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "No Recents",
-                            fontSize = 28.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Text(
-                            text = "See recently viewed cocktails here.",
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                    }
-
-                }
-
-            } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    contentPadding = PaddingValues(16.dp)
-                ) {
-                    items(cocktails.data.recentCocktails?.size ?: 0) {
-                        WideMiniCocktailCardView(model = cocktails.data.recentCocktails?.get(it)) {
-                            navAction.navigateToCocktailDetail(it!!)
-
-                        }
-                    }
-                }
-            }
-
-
-        } else {
-            Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
-                Text(
-                    text = "Search",
-                    color = Color.Gray,
-                    fontSize = 22.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "Results",
-                    fontSize = 28.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            if (cocktails.data.searchCocktails?.isEmpty() == true) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "No Result",
-                            fontSize = 28.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Text(
-                            text = "Check the spelling or try a new search.",
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                    }
-
-                }
-
-            } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    contentPadding = PaddingValues(16.dp)
-                ) {
-                    items(cocktails.data.searchCocktails?.size ?: 0) {
-                        SearchCocktailCardView(model = cocktails.data.searchCocktails?.get(it)!!) {
-                            navAction.navigateToCocktailDetail(it!!)
-                        }
-                    }
-                }
-            }
-        }
-
-
-    }
-    if (cocktails.isPageLoading) {
-        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.DarkGray)
-                .alpha(0.5f), contentAlignment = Alignment.Center
+                .padding(top = 32.dp)
         ) {
-            CircularProgressIndicator()
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 32.dp)
+                    .padding(horizontal = 16.dp)
+                    .shadow(4.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White)
+            )
+            {
+                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+
+                        TextField(
+                            singleLine = true,
+                            maxLines = 1,
+                            modifier = Modifier
+                                .focusRequester(focusRequester)
+                                .background(color = Color.White)
+                                .fillMaxWidth(0.9f),
+                            value = textState.value,
+                            onValueChange = { value ->
+                                textState.value = value
+                            },
+                            colors = TextFieldDefaults.textFieldColors(
+                                cursorColor = Color.Black,
+                                focusedIndicatorColor = Color.Transparent,
+                                containerColor = Color.White,
+                                disabledTextColor = Color.Black,
+                                focusedTextColor = Color.Black,
+                                unfocusedTextColor = Color.Black
+                            ),
+                        )
+
+
+                        Image(
+                            modifier = Modifier
+                                .weight(0.1f)
+                                .size(24.dp)
+                                .clickable {
+                                    if (textState.value.text.isNotBlank()) textState.value =
+                                        TextFieldValue()
+
+
+                                },
+                            painter = if (textState.value.text.isNotBlank()) painterResource(R.drawable.ic_cross)
+                            else painterResource(
+                                R.drawable.ic_search
+                            ),
+                            contentDescription = "Search Icon",
+                        )
+                    }
+                    Box(Modifier.height(3.dp)) {
+                        if (cocktails.isSearchLoading)
+                            LinearProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(3.dp)
+                            )
+                    }
+
+                }
+
+
+            }
+
+
+
+
+
+            if (cocktails.data.searchCocktails == null) {
+//recent cocktails
+                Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
+                    Text(
+                        text = "Recently",
+                        color = Color.Gray,
+                        fontSize = 22.sp,
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Normal,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = "Viewed",
+                        fontSize = 28.sp,
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                if (cocktails.data.recentCocktails?.isEmpty() == true) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "No Recents",
+                                fontSize = 28.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Text(
+                                text = "See recently viewed cocktails here.",
+                                fontSize = 18.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                    }
+
+                } else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+                        items(cocktails.data.recentCocktails.orEmpty(), key = {item -> item?.id.toString()  }) {model->
+                            WideMiniCocktailCardView(model = model) {redirectId->
+                                navAction.navigateToCocktailDetail(redirectId.toString())
+
+                            }
+                        }
+                    }
+                }
+
+
+            } else {
+                Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
+                    Text(
+                        text = "Search",
+                        color = Color.Gray,
+                        fontSize = 22.sp,
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Normal,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = "Results",
+                        fontSize = 28.sp,
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                if (cocktails.data.searchCocktails?.isEmpty() == true) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "No Result",
+                                fontSize = 28.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Text(
+                                text = "Check the spelling or try a new search.",
+                                fontSize = 18.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                    }
+
+                } else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+                        items(items=cocktails.data.searchCocktails.orEmpty(), key = {item-> item?.id.toString()}) {model->
+                            SearchCocktailCardView(model = model) {redirectId->
+                                navAction.navigateToCocktailDetail(redirectId.toString())
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        }
+        if (cocktails.isPageLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.DarkGray)
+                    .alpha(0.5f), contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
-}
 
 }
 

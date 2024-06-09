@@ -34,7 +34,6 @@ fun CocktailRemote.toLocal(): CocktailLocal {
     )
 }
 
-
 fun CocktailLocal.toModel(): CocktailModel {
     return CocktailModel(
         id = id,
@@ -48,7 +47,6 @@ fun CocktailLocal.toModel(): CocktailModel {
         tags = tags
     )
 }
-
 
 fun CocktailFavoriteLocal.toModel(): CocktailModel {
     return CocktailModel(
@@ -64,7 +62,6 @@ fun CocktailFavoriteLocal.toModel(): CocktailModel {
     )
 }
 
-
 fun CocktailModel.toFavLocal(): CocktailFavoriteLocal {
     return CocktailFavoriteLocal(
         id = id,
@@ -78,7 +75,6 @@ fun CocktailModel.toFavLocal(): CocktailFavoriteLocal {
         tags = tags.orEmpty()
     )
 }
-
 
 fun extractIngredients(data: CocktailRemote): List<IngredientModel> {
     val temp = arrayListOf<IngredientModel>()

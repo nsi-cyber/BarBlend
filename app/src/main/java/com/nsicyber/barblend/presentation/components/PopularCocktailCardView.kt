@@ -33,13 +33,13 @@ import com.nsicyber.barblend.data.model.CocktailModel
 
 @Composable
 fun PopularCocktailCardView(
-    model: CocktailModel, onClick: (cocktailId: String) -> Unit = {}
+    model: CocktailModel?, onClick: (cocktailId: String?) -> Unit = {}
 ) {
 
 
     Box(
         modifier = Modifier
-            .clickable { onClick(model.id) }
+            .clickable { onClick(model?.id) }
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.primaryContainer)
             .width(208.dp)
@@ -51,11 +51,11 @@ fun PopularCocktailCardView(
                 modifier = Modifier
                     .size(200.dp)
                     .clip(RoundedCornerShape(12.dp)),
-                model = model.image,
+                model = model?.image,
                 contentDescription = ""
             )
             Text(
-                text = model.title.toString(),
+                text = model?.title.toString(),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 minLines = 2,
@@ -64,7 +64,7 @@ fun PopularCocktailCardView(
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = model.ingredients?.size.toString(),
+                    text = model?.ingredients?.size.toString(),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                 )
@@ -77,8 +77,8 @@ fun PopularCocktailCardView(
                 modifier = Modifier.height(72.dp),
                 rows = StaggeredGridCells.Fixed(2)
             ) {
-                items(model.tags?.size ?: 0) { index ->
-                    KeywordCardItem(model.tags?.get(index))
+                items(model?.tags?.size ?: 0) { index ->
+                    KeywordCardItem(model?.tags?.get(index))
                 }
 
             }
@@ -110,12 +110,13 @@ fun KeywordCardItem(
 
 @Composable
 fun LatestCocktailCardView(
-    model: CocktailModel, onClick: (cocktailId: String) -> Unit = {}
+    model: CocktailModel?, onClick: (cocktailId: String?) -> Unit = {}
 ) {
 
 
     Box(
-        modifier = Modifier.clickable { onClick(model.id) }
+        modifier = Modifier
+            .clickable { onClick(model?.id) }
             .clip(RoundedCornerShape(12.dp))
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primaryContainer)
@@ -127,20 +128,21 @@ fun LatestCocktailCardView(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(12.dp)),
-                model = model.image,
+                model = model?.image,
                 contentDescription = ""
             )
-            Column(modifier=Modifier.fillMaxHeight()) {
-                Text(maxLines = 2,
-                    text = model.title.toString(),
+            Column(modifier = Modifier.fillMaxHeight()) {
+                Text(
+                    maxLines = 2,
+                    text = model?.title.toString(),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.fillMaxSize(0f))
-                Row(modifier = Modifier,verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = model.ingredients?.size.toString(),
+                        text = model?.ingredients?.size.toString(),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                     )
@@ -159,10 +161,9 @@ fun LatestCocktailCardView(
 }
 
 
-
 @Composable
 fun SearchCocktailCardView(
-    model: CocktailModel, onClick: (cocktailId: String) -> Unit = {}
+    model: CocktailModel?, onClick: (cocktailId: String) -> Unit = {}
 ) {
 
 
@@ -170,7 +171,7 @@ fun SearchCocktailCardView(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
             .fillMaxWidth()
-            .clickable { onClick(model.id) }
+            .clickable { onClick(model?.id.toString()) }
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(4.dp)
 
@@ -180,17 +181,18 @@ fun SearchCocktailCardView(
                 modifier = Modifier
                     .size(60.dp)
                     .clip(RoundedCornerShape(12.dp)),
-                model = model.image,
+                model = model?.image,
                 contentDescription = ""
             )
-            Column(modifier=Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
-                Text(maxLines = 2,
-                    text = model.title.toString(),
+            Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
+                Text(
+                    maxLines = 2,
+                    text = model?.title.toString(),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis
                 )
-                }
+            }
 
 
         }

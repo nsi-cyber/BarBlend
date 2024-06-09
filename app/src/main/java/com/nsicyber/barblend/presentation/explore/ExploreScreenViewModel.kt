@@ -26,7 +26,7 @@ class ExploreScreenViewModel @Inject constructor(
     private val _exploreScreenState = MutableStateFlow(ExploreScreenState())
     val exploreScreenState = _exploreScreenState.asStateFlow()
 
-    fun getPopularCocktails() {
+    private fun getPopularCocktails() {
         viewModelScope.launch {
             getPopularCocktailsUseCase().onEach { result ->
                 when (result) {
@@ -64,7 +64,29 @@ class ExploreScreenViewModel @Inject constructor(
         }
     }
 
-    fun getLatestCocktails() {
+
+    private fun setStateEmpty() {
+        _exploreScreenState.update {
+            ExploreScreenState()
+        }
+    }
+
+    fun onEvent(event: ExploreScreenEvent) {
+        when (event) {
+            ExploreScreenEvent.RefreshPage -> {
+                setStateEmpty()
+                getPopularCocktails()
+                getLatestCocktails()
+            }
+
+            ExploreScreenEvent.StartPage -> {
+                getPopularCocktails()
+                getLatestCocktails()
+            }
+        }
+    }
+
+    private fun getLatestCocktails() {
         viewModelScope.launch {
             getLatestCocktailsUseCase().onEach { result ->
                 when (result) {

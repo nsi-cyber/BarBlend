@@ -1,4 +1,4 @@
-package com.nsicyber.barblend.presentation.detail
+package com.nsicyber.barblend.presentation.randomCocktail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,12 +55,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CocktailDetailScreen(
-    cocktailId: String?,
-    viewModel: CocktailDetailScreenViewModel = hiltViewModel<CocktailDetailScreenViewModel>(),
+fun RandomDetailScreen(
+    viewModel: RandomDetailScreenViewModel = hiltViewModel<RandomDetailScreenViewModel>(),
 ) {
-    val cocktails by viewModel.cocktailDetailScreenState.collectAsState(
-        initial = CocktailDetailScreenState(isLoading = true)
+    val cocktails by viewModel.randomDetailScreenState.collectAsState(
+        initial = RandomDetailScreenState(isLoading = true)
     )
 
     val coroutineScope = rememberCoroutineScope()
@@ -69,30 +68,29 @@ fun CocktailDetailScreen(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.getCocktailDetail(cocktailId)
-        viewModel.isCocktailFavorite(cocktailId)
+        viewModel.onEvent(RandomDetailScreenEvent.StartScreen)
     }
 
     LaunchedEffect(bottomSheetState.bottomSheetState.currentValue) {
         if (bottomSheetState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded)
-            viewModel.onEvent(CocktailDetailScreenEvent.ResetBottomSheet)
+            viewModel.onEvent(RandomDetailScreenEvent.ResetBottomSheet)
     }
     LaunchedEffect(cocktails) {
         when (cocktails.bottomSheetData.bottomSheetState) {
-            BottomSheetState.onInput -> {
+            RandomBottomSheetState.onInput -> {
 
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.expand()
                 }
             }
 
-            BottomSheetState.onMessage -> {
+            RandomBottomSheetState.onMessage -> {
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.expand()
                 }
             }
 
-            BottomSheetState.onDismiss -> {
+            RandomBottomSheetState.onDismiss -> {
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.hide()
                 }
@@ -115,7 +113,7 @@ fun CocktailDetailScreen(
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                if (cocktails.bottomSheetData.bottomSheetState == BottomSheetState.onInput) {
+                if (cocktails.bottomSheetData.bottomSheetState == RandomBottomSheetState.onInput) {
                     TextField(
                         placeholder = { Text(text = "You Can add notes") },
                         modifier = Modifier
@@ -124,7 +122,7 @@ fun CocktailDetailScreen(
                             .background(color = Color.White),
                         value = cocktails.bottomSheetData.suggestion.orEmpty(),
                         onValueChange = { value ->
-                            viewModel.onEvent(CocktailDetailScreenEvent.TypeSuggestion(value))
+                            viewModel.onEvent(RandomDetailScreenEvent.TypeSuggestion(value))
                         },
                         colors = TextFieldDefaults.textFieldColors(
                             cursorColor = Color.Black,
@@ -143,7 +141,8 @@ fun CocktailDetailScreen(
 
                             .background(MaterialTheme.colorScheme.primaryContainer)
                             .fillMaxWidth()
-                            .padding(16.dp)                            .clickable { viewModel.onEvent(CocktailDetailScreenEvent.AddToFavorites) }
+                            .padding(16.dp)                            .clickable { viewModel.onEvent(
+                               RandomDetailScreenEvent.AddToFavorites) }
                         ,
                         contentAlignment = Alignment.Center
                     ) {
@@ -177,9 +176,9 @@ fun CocktailDetailScreen(
                             .clip(RoundedCornerShape(20.dp))
                             .clickable {
                                 if (cocktails.data.isFavorite == true) {
-                                    viewModel.onEvent(CocktailDetailScreenEvent.RemoveFromFavorites)
+                                    viewModel.onEvent(RandomDetailScreenEvent.RemoveFromFavorites)
                                 } else {
-                                    viewModel.onEvent(CocktailDetailScreenEvent.OpenSuggestionBottomSheet)
+                                    viewModel.onEvent(RandomDetailScreenEvent.OpenSuggestionBottomSheet)
 
                                 }
                             }

@@ -48,7 +48,7 @@ object InternetConnectionObserver {
     }
 
 
-     fun createNetworkCallback() = object : ConnectivityManager.NetworkCallback() {
+     private fun createNetworkCallback() = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             val networkCapabilities = cm?.getNetworkCapabilities(network)
             val hasInternetCapability = networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

@@ -41,7 +41,7 @@ fun FavoriteListScreen(
 
 
     LaunchedEffect(Unit) {
-        viewModel.getFavorites()
+        viewModel.onEvent(FavoriteListScreenEvent.StartPage)
     }
 
 
@@ -73,7 +73,9 @@ fun FavoriteListScreen(
             if (cocktails.data.favoriteCocktails?.isEmpty() == true) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
@@ -92,17 +94,18 @@ fun FavoriteListScreen(
 
                 }
 
-            } else
-            {   LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                items(cocktails.data.favoriteCocktails?.size ?: 0) {
-                    SearchCocktailCardView(model = cocktails.data.favoriteCocktails?.get(it)!!) {
-                        navAction.navigateToFavoriteDetail(it!!)
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    items(cocktails.data.favoriteCocktails?.size ?: 0) {
+                        SearchCocktailCardView(model = cocktails.data.favoriteCocktails?.get(it)!!) {
+                            navAction.navigateToFavoriteDetail(it!!)
+                        }
                     }
                 }
-            }}
+            }
 
         }
 
