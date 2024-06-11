@@ -1,29 +1,32 @@
 package com.nsicyber.barblend.domain.repository
 
 import com.nsicyber.barblend.common.ApiResult
-import com.nsicyber.barblend.data.local.entity.CocktailFavoriteLocal
-import com.nsicyber.barblend.data.local.entity.CocktailLocal
-import com.nsicyber.barblend.data.remote.model.CocktailResponse
+import com.nsicyber.barblend.common.DaoResult
+import com.nsicyber.barblend.data.model.CocktailModel
 import kotlinx.coroutines.flow.Flow
 
-
 interface DataRepository {
+    fun getCocktailDetail(id: String?): Flow<ApiResult<CocktailModel?>>
 
-    suspend fun getCocktailDetail(id:String?): Flow<ApiResult<CocktailResponse?>>
-    suspend fun getRandomCocktailDetail(): Flow<ApiResult<CocktailResponse?>>
-    suspend fun getPopularCocktailList(): Flow<ApiResult<CocktailResponse?>>
-    suspend fun getLatestCocktailList(): Flow<ApiResult<CocktailResponse?>>
-    suspend fun searchCocktailByName(name:String): Flow<ApiResult<CocktailResponse?>>
+    fun getRandomCocktailDetail(): Flow<ApiResult<CocktailModel?>>
 
+    fun getPopularCocktailList(): Flow<ApiResult<List<CocktailModel?>?>>
 
-    suspend fun getFavoriteCocktailDetailFromDao(id:String?): Flow<CocktailFavoriteLocal>
-    suspend fun isFavoriteCocktail(id:String?): Int
-    suspend fun getFavoriteCocktailsFromDao(): Flow<List<CocktailFavoriteLocal>>
-    suspend fun getRecentCocktailsFromDao():  Flow<List<CocktailLocal>>
-    suspend fun saveToFavoriteDao(cocktail: CocktailFavoriteLocal)
-    suspend fun saveToRecentDao(cocktail: CocktailLocal)
-    suspend fun removeFromDao(cocktail: CocktailFavoriteLocal)
+    fun getLatestCocktailList(): Flow<ApiResult<List<CocktailModel?>?>>
 
+    fun searchCocktailByName(name: String): Flow<ApiResult<List<CocktailModel?>?>>
 
+    fun getFavoriteCocktailDetailFromDao(id: String?): Flow<DaoResult<CocktailModel?>>
 
+    suspend fun isFavoriteCocktail(id: String?): Int
+
+    fun getFavoriteCocktailsFromDao(): Flow<DaoResult<List<CocktailModel?>?>>
+
+    fun getRecentCocktailsFromDao(): Flow<DaoResult<List<CocktailModel?>?>>
+
+    suspend fun saveToFavoriteDao(cocktail: CocktailModel)
+
+    suspend fun saveToRecentDao(cocktail: CocktailModel)
+
+    suspend fun removeFromDao(cocktail: CocktailModel)
 }

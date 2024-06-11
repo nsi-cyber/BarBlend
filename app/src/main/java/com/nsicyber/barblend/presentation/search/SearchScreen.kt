@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -31,7 +30,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
@@ -49,18 +47,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.data.model.CocktailModel
+import com.nsicyber.barblend.presentation.components.BaseView
 import com.nsicyber.barblend.presentation.components.SearchCocktailCardView
-import com.nsicyber.barblend.presentation.navigation.NavigationActions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    navAction: NavigationActions,
+    onDetail: (id: String) -> Unit,
     viewModel: SearchScreenViewModel = hiltViewModel<SearchScreenViewModel>(),
 ) {
-    val cocktails by viewModel.searchScreenState.collectAsState(
-        initial = SearchScreenState(isPageLoading = true),
-    )
+    val cocktails by viewModel.searchScreenState.collectAsState()
     val focusRequester = remember { FocusRequester() }
     val textState = remember { mutableStateOf(TextFieldValue()) }
 
@@ -80,7 +76,7 @@ fun SearchScreen(
         viewModel.onEvent(SearchScreenEvent.StartPage)
     }
 
-    Box {
+    BaseView(content = {
         Column(
             modifier =
                 Modifier
@@ -213,7 +209,7 @@ fun SearchScreen(
                             key = { item -> item?.id.toString() },
                         ) { model ->
                             WideMiniCocktailCardView(model = model) { redirectId ->
-                                navAction.navigateToCocktailDetail(redirectId.toString())
+                                onDetail(redirectId.toString())
                             }
                         }
                     }
@@ -266,26 +262,14 @@ fun SearchScreen(
                             key = { item -> item?.id.toString() },
                         ) { model ->
                             SearchCocktailCardView(model = model) { redirectId ->
-                                navAction.navigateToCocktailDetail(redirectId.toString())
+                                onDetail(redirectId)
                             }
                         }
                     }
                 }
             }
         }
-        if (cocktails.isPageLoading) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(Color.DarkGray)
-                        .alpha(0.5f),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
+    }, isLoading = cocktails.isPageLoading)
 }
 
 @Composable

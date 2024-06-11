@@ -1,27 +1,13 @@
 package com.nsicyber.barblend.data
 
-import com.nsicyber.barblend.data.local.entity.CocktailFavoriteLocal
-import com.nsicyber.barblend.data.local.entity.CocktailLocal
+import com.nsicyber.barblend.data.local.entity.CocktailEntity
+import com.nsicyber.barblend.data.local.entity.CocktailFavoriteEntity
 import com.nsicyber.barblend.data.model.CocktailModel
 import com.nsicyber.barblend.data.model.IngredientModel
-import com.nsicyber.barblend.data.remote.model.CocktailRemote
+import com.nsicyber.barblend.data.remote.model.CocktailResponse
 
-fun CocktailRemote.toModel(): CocktailModel {
+fun CocktailResponse.toModel(): CocktailModel {
     return CocktailModel(
-        id = idDrink!!,
-        category = strCategory,
-        title = strDrink,
-        glass = strGlass,
-        image = strDrinkThumb,
-        suggestion = null,
-        ingredients = extractIngredients(this),
-        instructions = strInstructions,
-        tags = strTags?.split(",")
-    )
-}
-
-fun CocktailRemote.toLocal(): CocktailLocal {
-    return CocktailLocal(
         id = idDrink.orEmpty(),
         category = strCategory.orEmpty(),
         title = strDrink.orEmpty(),
@@ -30,11 +16,39 @@ fun CocktailRemote.toLocal(): CocktailLocal {
         suggestion = "",
         ingredients = extractIngredients(this),
         instructions = strInstructions.orEmpty(),
-        tags = strTags?.split(",").orEmpty()
+        tags = strTags?.split(",").orEmpty(),
     )
 }
 
-fun CocktailLocal.toModel(): CocktailModel {
+fun CocktailResponse?.toLocal(): CocktailEntity {
+    return CocktailEntity(
+        id = this?.idDrink.orEmpty(),
+        category = this?.strCategory.orEmpty(),
+        title = this?.strDrink.orEmpty(),
+        glass = this?.strGlass.orEmpty(),
+        image = this?.strDrinkThumb.orEmpty(),
+        suggestion = "",
+        ingredients = extractIngredients(this),
+        instructions = this?.strInstructions.orEmpty(),
+        tags = this?.strTags?.split(",").orEmpty(),
+    )
+}
+
+fun CocktailEntity?.toModel(): CocktailModel {
+    return CocktailModel(
+        id = this?.id.orEmpty(),
+        category = this?.category.orEmpty(),
+        title = this?.title.orEmpty(),
+        glass = this?.glass.orEmpty(),
+        image = this?.image.orEmpty(),
+        suggestion = this?.suggestion.orEmpty(),
+        ingredients = this?.ingredients.orEmpty(),
+        instructions = this?.instructions.orEmpty(),
+        tags = this?.tags.orEmpty(),
+    )
+}
+
+fun CocktailFavoriteEntity.toModel(): CocktailModel {
     return CocktailModel(
         id = id,
         category = category,
@@ -44,26 +58,12 @@ fun CocktailLocal.toModel(): CocktailModel {
         suggestion = suggestion,
         ingredients = ingredients,
         instructions = instructions,
-        tags = tags
+        tags = tags,
     )
 }
 
-fun CocktailFavoriteLocal.toModel(): CocktailModel {
-    return CocktailModel(
-        id = id,
-        category = category,
-        title = title,
-        glass = glass,
-        image = image,
-        suggestion = suggestion,
-        ingredients = ingredients,
-        instructions = instructions,
-        tags = tags
-    )
-}
-
-fun CocktailModel.toFavLocal(): CocktailFavoriteLocal {
-    return CocktailFavoriteLocal(
+fun CocktailModel.toLocal(): CocktailEntity {
+    return CocktailEntity(
         id = id,
         category = category.orEmpty(),
         title = title.orEmpty(),
@@ -72,56 +72,91 @@ fun CocktailModel.toFavLocal(): CocktailFavoriteLocal {
         suggestion = suggestion.orEmpty(),
         ingredients = ingredients.orEmpty(),
         instructions = instructions.orEmpty(),
-        tags = tags.orEmpty()
+        tags = tags.orEmpty(),
     )
 }
 
-fun extractIngredients(data: CocktailRemote): List<IngredientModel> {
+fun CocktailModel.toFavLocal(): CocktailFavoriteEntity {
+    return CocktailFavoriteEntity(
+        id = id,
+        category = category.orEmpty(),
+        title = title.orEmpty(),
+        glass = glass.orEmpty(),
+        image = image.orEmpty(),
+        suggestion = suggestion.orEmpty(),
+        ingredients = ingredients.orEmpty(),
+        instructions = instructions.orEmpty(),
+        tags = tags.orEmpty(),
+    )
+}
+
+fun extractaIngredients(data: CocktailResponse?): List<IngredientModel> {
     val temp = arrayListOf<IngredientModel>()
-    data.strIngredient1?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient1?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure1.orEmpty()))
     }
-    data.strIngredient2?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient2?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure2.orEmpty()))
     }
-    data.strIngredient3?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient3?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure3.orEmpty()))
     }
-    data.strIngredient4?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient4?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure4.orEmpty()))
     }
-    data.strIngredient5?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient5?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure5.orEmpty()))
     }
-    data.strIngredient6?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient6?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure6.orEmpty()))
     }
-    data.strIngredient7?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient7?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure7.orEmpty()))
     }
-    data.strIngredient8?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient8?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure8.orEmpty()))
     }
-    data.strIngredient9?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient9?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure9.orEmpty()))
     }
-    data.strIngredient10?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient10?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure10.orEmpty()))
     }
-    data.strIngredient11?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient11?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure11.orEmpty()))
     }
-    data.strIngredient12?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient12?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure12.orEmpty()))
     }
-    data.strIngredient13?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient13?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure13.orEmpty()))
     }
-    data.strIngredient14?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient14?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure14.orEmpty()))
     }
-    data.strIngredient15?.takeIf { it.isNotEmpty() }?.let {
+    data?.strIngredient15?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure15.orEmpty()))
     }
     return temp.toList()
+}
+
+fun extractIngredients(data: CocktailResponse?): List<IngredientModel> {
+    data?.let {
+        val ingredients = mutableListOf<IngredientModel>()
+        for (i in 1..15) {
+            val ingredient =
+                data::class.members.find { it.name == "strIngredient$i" }?.call(data) as? String
+            val measure =
+                data::class.members.find { it.name == "strMeasure$i" }?.call(data) as? String
+            if (!ingredient.isNullOrEmpty()) {
+                ingredients.add(
+                    IngredientModel(
+                        ingredient = ingredient,
+                        measure = measure.orEmpty(),
+                    ),
+                )
+            }
+        }
+        return ingredients
+    } ?: run { return emptyList<IngredientModel>() }
 }

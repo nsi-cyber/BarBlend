@@ -15,7 +15,6 @@ android {
         cmake {
             path("cpp/CMakeLists.txt")
             version("3.22.1") // Will be replaced by your cmake version
-
         }
     }
 
@@ -35,13 +34,12 @@ android {
         }
     }
 
-
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -88,16 +86,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
     implementation(libs.hilt.android.v2481)
     ksp(libs.hilt.android.compiler.v2481)
     implementation(libs.hilt.navigation.compose)
-    //Dependency Injection
+    // Dependency Injection
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
     ksp(libs.androidx.room.compiler)
 
-    //Network
+    // Network
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.gson)
     implementation(libs.okhttp3.okhttp)
@@ -105,9 +102,7 @@ dependencies {
 
     implementation(libs.coil.compose)
 
-
     annotationProcessor(libs.compiler)
-
 
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.datastore.preferences)
@@ -116,6 +111,7 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
 
     implementation("com.airbnb.android:lottie-compose:5.2.0")
+    implementation(kotlin("reflect"))
 }
 /*
 kapt {

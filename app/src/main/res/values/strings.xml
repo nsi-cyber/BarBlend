@@ -10,7 +10,6 @@
     <string name="recent_subtitle">Viewed</string>
 
 
-
     <string name="tags_title">Tags</string>
     <string name="prepare_title">How to</string>
     <string name="prepare_subtitle">Prepare</string>
@@ -32,16 +31,10 @@
     <string name="suggestion_subtitle">From You</string>
 
 
-
-
-
     <string name="bottom_sheet_placeholder">Add you suggestions here…</string>
     <string name="bottom_sheet_button">Add you suggestions here…</string>
     <string name="feeling_luck_button_title">Feeling</string>
     <string name="feeling_luck_button_subtitle">Lucky</string>
-
-
-
 
 
     <string name="ic_search_cd">Search Icon</string>

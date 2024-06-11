@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -45,20 +43,18 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.data.model.CocktailModel
+import com.nsicyber.barblend.presentation.components.BaseView
 import com.nsicyber.barblend.presentation.components.LatestCocktailCardView
 import com.nsicyber.barblend.presentation.components.PopularCocktailCardView
-import com.nsicyber.barblend.presentation.navigation.NavigationActions
 
 @Composable
 fun ExploreScreen(
-    navAction: NavigationActions,
+    onDetail: (id: String) -> Unit,
+    onRandom: () -> Unit,
+    onSearch: () -> Unit,
     viewModel: ExploreScreenViewModel = hiltViewModel<ExploreScreenViewModel>(),
 ) {
-    val cocktails by viewModel.exploreScreenState.collectAsState(
-        initial = ExploreScreenState(
-            isLoading = true
-        )
-    )
+    val cocktails by viewModel.exploreScreenState.collectAsState()
     val swipeRefreshState = remember { SwipeRefreshState(isRefreshing = false) }
     val lazyState = rememberLazyListState()
 
@@ -68,24 +64,23 @@ fun ExploreScreen(
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(ExploreScreenEvent.StartPage)
-
     }
 
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = {
-            viewModel.onEvent(ExploreScreenEvent.RefreshPage)
-        }
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+    BaseView(content = {
+        SwipeRefresh(
+            state = swipeRefreshState,
+            onRefresh = {
+                viewModel.onEvent(ExploreScreenEvent.RefreshPage)
+            },
+        ) {
             Scaffold(floatingActionButton = {
                 Button(
-                    onClick = { navAction.navigateToRandomDetail() },
+                    onClick = { onRandom() },
                     shape = RoundedCornerShape(99.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
@@ -103,71 +98,69 @@ fun ExploreScreen(
                             fontSize = 32.sp,
                         )
                     }
-
                 }
             }) { pdVal ->
                 LazyColumn(
                     state = lazyState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(pdVal)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(pdVal),
                 ) {
                     item {
-                        PopularCocktailsSection(navAction, cocktails.data.popularCocktails)
+                        PopularCocktailsSection(
+                            popularCocktails = cocktails.data.popularCocktails,
+                            onClick = { id -> onDetail(id) },
+                        )
                     }
 
                     item {
-                        SearchSection(navAction)
+                        SearchSection(onClick = onSearch)
                     }
 
                     item {
-                        if (!cocktails.data.latestCocktails.isNullOrEmpty())
+                        if (!cocktails.data.latestCocktails.isNullOrEmpty()) {
                             LatestCocktailsSectionTitle()
+                        }
                     }
 
                     items(
                         cocktails.data.latestCocktails.orEmpty(),
-                        key = { item -> item?.id.toString() }) { model ->
+                        key = { item -> item?.id.toString() },
+                    ) { model ->
                         Box(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
                             LatestCocktailCardView(model = model) { redirectId ->
-                                navAction.navigateToCocktailDetail(redirectId.toString())
+                                onDetail(redirectId)
                             }
                         }
                     }
 
-
                     item {
-                        if(cocktails.data.popularCocktails.isNullOrEmpty()&&cocktails.data.latestCocktails.isNullOrEmpty())
-                            Box(modifier = Modifier.clickable {
-                                viewModel.onEvent(ExploreScreenEvent.StartPage)
-                            }.padding(24.dp)){
+                        if (cocktails.data.popularCocktails.isNullOrEmpty() && cocktails.data.latestCocktails.isNullOrEmpty()) {
+                            Box(
+                                modifier =
+                                    Modifier.clickable {
+                                        viewModel.onEvent(ExploreScreenEvent.StartPage)
+                                    }.padding(24.dp),
+                            ) {
                                 Text(text = "Error while fetching data. Click to retry")
                             }
+                        }
                     }
                 }
             }
-
-
-            if (cocktails.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.DarkGray)
-                        .alpha(0.5f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
         }
-    }
+    }, isLoading = cocktails.isLoading)
 }
 
 @Composable
-fun PopularCocktailsSection(navAction: NavigationActions, popularCocktails: List<CocktailModel?>?) {
-    if (!popularCocktails.isNullOrEmpty()) {
+fun PopularCocktailsSection(
+    popularCocktails: List<CocktailModel?>?,
+    onClick: (id: String) -> Unit,
+) {
+    if (popularCocktails?.isNotEmpty() == true) {
         Column(
-            modifier = Modifier.padding(start = 16.dp, top = 32.dp, bottom = 8.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 32.dp, bottom = 8.dp),
         ) {
             Text(
                 text = stringResource(id = R.string.popular_cocktails_title),
@@ -175,24 +168,26 @@ fun PopularCocktailsSection(navAction: NavigationActions, popularCocktails: List
                 fontSize = 22.sp,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             Text(
                 text = stringResource(id = R.string.popular_cocktails_subtitle),
                 fontSize = 28.sp,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(start = 16.dp)
+            contentPadding = PaddingValues(start = 16.dp),
         ) {
-
-            items(items = popularCocktails, key = { item -> item?.id.toString() }) { model ->
+            items(
+                items = popularCocktails.orEmpty(),
+                key = { item -> item?.id.toString() },
+            ) { model ->
                 PopularCocktailCardView(model = model) { redirectId ->
-                    navAction.navigateToCocktailDetail(redirectId.toString())
+                    onClick(redirectId)
                 }
             }
         }
@@ -200,33 +195,36 @@ fun PopularCocktailsSection(navAction: NavigationActions, popularCocktails: List
 }
 
 @Composable
-fun SearchSection(navAction: NavigationActions) {
+fun SearchSection(onClick: () -> Unit) {
     Text(
         text = stringResource(id = R.string.search_title),
         fontSize = 28.sp,
         textAlign = TextAlign.Start,
         fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, top = 16.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, top = 16.dp),
     )
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .padding(vertical = 16.dp)
-            .height(50.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .shadow(4.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color.White)
-            .clickable { navAction.navigateToSearch() }
+        modifier =
+            Modifier
+                .padding(vertical = 16.dp)
+                .height(50.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .shadow(4.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(Color.White)
+                .clickable { onClick() },
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = stringResource(id = R.string.search_placeholder),
@@ -234,13 +232,13 @@ fun SearchSection(navAction: NavigationActions) {
                 fontSize = 18.sp,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal,
-                modifier = Modifier.wrapContentSize()
+                modifier = Modifier.wrapContentSize(),
             )
 
             Image(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(R.drawable.ic_search),
-                contentDescription = "Search Icon"
+                contentDescription = "Search Icon",
             )
         }
     }
@@ -249,7 +247,7 @@ fun SearchSection(navAction: NavigationActions) {
 @Composable
 fun LatestCocktailsSectionTitle() {
     Column(
-        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
     ) {
         Text(
             text = stringResource(id = R.string.last_added_title),
@@ -257,16 +255,14 @@ fun LatestCocktailsSectionTitle() {
             fontSize = 22.sp,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Normal,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Text(
             text = stringResource(id = R.string.last_added_subtitle),
             fontSize = 28.sp,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
-
-

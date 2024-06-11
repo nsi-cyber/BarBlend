@@ -2,7 +2,6 @@
 #include <string>
 
 
-
 extern "C" jstring
 Java_com_nsicyber_barblend_common_ApiKeyProvider_00024Companion_getApiKey(
         JNIEnv *env,

@@ -5,6 +5,7 @@ class ApiKeyProvider {
         init {
             System.loadLibrary("native-lib")
         }
+
         external fun getApiKey(): String
     }
 }

@@ -29,6 +29,7 @@ object DoesNetworkHaveInternet {
 
 interface InternetConnectionCallback {
     fun onConnected()
+
     fun onDisconnected()
 }
 
@@ -48,48 +49,48 @@ object InternetConnectionObserver {
         return this
     }
 
-
-     private fun createNetworkCallback() = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            val networkCapabilities = cm?.getNetworkCapabilities(network)
-            val hasInternetCapability = networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            if (hasInternetCapability == true) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val hasInternet = DoesNetworkHaveInternet.execute(network.socketFactory)
-                    if (hasInternet) {
-                        withContext(Dispatchers.Main) {
-                            validNetworks.add(network)
-                            checkValidNetworks()
+    private fun createNetworkCallback() =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                val networkCapabilities = cm?.getNetworkCapabilities(network)
+                val hasInternetCapability =
+                    networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                if (hasInternetCapability == true) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val hasInternet = DoesNetworkHaveInternet.execute(network.socketFactory)
+                        if (hasInternet) {
+                            withContext(Dispatchers.Main) {
+                                validNetworks.add(network)
+                                checkValidNetworks()
+                            }
                         }
                     }
                 }
             }
-        }
 
-        override fun onLost(network: Network) {
-            validNetworks.remove(network)
-            Log.d("InternetConnectionObserver: onLost/ ", network.toString() )
-            checkValidNetworks()
+            override fun onLost(network: Network) {
+                validNetworks.remove(network)
+                Log.d("InternetConnectionObserver: onLost/ ", network.toString())
+                checkValidNetworks()
+            }
         }
-    }
 
     private fun checkValidNetworks() {
         if (validNetworks.size > 0) {
             connectionCallback?.onConnected()
             Log.d("InternetConnectionObserver:  ", "onConnected ")
-
         } else {
             connectionCallback?.onDisconnected()
             Log.d("InternetConnectionObserver:  ", "onDisconnected ")
-
         }
     }
 
     fun register(): InternetConnectionObserver {
         networkCallback = createNetworkCallback()
-        val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .build()
+        val networkRequest =
+            NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build()
         cm?.registerNetworkCallback(networkRequest, networkCallback)
         return this
     }
@@ -100,15 +101,15 @@ object InternetConnectionObserver {
 
     fun checkInitialInternetConnection(callback: (Boolean) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            val isConnected = cm?.activeNetwork?.let { network ->
-                val networkCapabilities = cm?.getNetworkCapabilities(network)
-                networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true &&
+            val isConnected =
+                cm?.activeNetwork?.let { network ->
+                    val networkCapabilities = cm?.getNetworkCapabilities(network)
+                    networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true &&
                         DoesNetworkHaveInternet.execute(network.socketFactory)
-            } ?: false
+                } ?: false
             withContext(Dispatchers.Main) {
                 callback(isConnected)
             }
         }
     }
-
 }

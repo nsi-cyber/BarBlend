@@ -19,14 +19,14 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromIngredientList(ingredients: List<IngredientModel?>?): String {
+    fun fromIngredientList(ingredients: List<IngredientModel>): String {
         val gson = Gson()
         return gson.toJson(ingredients)
     }
 
     @TypeConverter
-    fun toIngredientList(ingredientsString: String): List<IngredientModel?>? {
-        val listType = object : TypeToken<List<IngredientModel?>?>() {}.type
+    fun toIngredientList(ingredientsString: String): List<IngredientModel> {
+        val listType = object : TypeToken<List<IngredientModel>>() {}.type
         return Gson().fromJson(ingredientsString, listType)
     }
 }

@@ -18,23 +18,21 @@ import com.nsicyber.barblend.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(
-    onSplashFinished: () -> Unit
-) {
-
+fun SplashScreen(onSplashFinished: () -> Unit) {
     LaunchedEffect(Unit) {
         delay(2000)
         onSplashFinished()
     }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize(), contentAlignment = Alignment.Center
-        ) {
-            LottieAnimation()
-        }
+    Box(
+        modifier =
+            Modifier
+                .fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        LottieAnimation()
     }
-
+}
 
 @Composable
 fun LottieAnimation() {
@@ -44,8 +42,9 @@ fun LottieAnimation() {
     LottieAnimation(
         composition,
         progress,
-        modifier = Modifier
-            .size(400.dp)
-            .padding(16.dp)
+        modifier =
+            Modifier
+                .size(400.dp)
+                .padding(16.dp),
     )
 }

@@ -1,6 +1,5 @@
 package com.nsicyber.barblend
 
-
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +17,6 @@ import com.nsicyber.barblend.common.InternetConnectionObserver
 import com.nsicyber.barblend.presentation.navigation.NavigationGraph
 import com.nsicyber.barblend.ui.theme.BarBlendTheme
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), InternetConnectionCallback {
@@ -43,7 +41,6 @@ class MainActivity : ComponentActivity(), InternetConnectionCallback {
                     NavigationGraph(isConnected = connected)
                 }
             }
-
         }
     }
 
@@ -56,7 +53,6 @@ class MainActivity : ComponentActivity(), InternetConnectionCallback {
         if (isConnected == false) {
             isConnected = true
             Toast.makeText(this, "Internet connection is established", Toast.LENGTH_SHORT).show()
-
         }
     }
 
@@ -65,15 +61,13 @@ class MainActivity : ComponentActivity(), InternetConnectionCallback {
         Toast.makeText(this, "Internet connection is lost", Toast.LENGTH_LONG).show()
     }
 
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun checkAndRequestNotificationPermission() {
         when {
             ContextCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.POST_NOTIFICATIONS
+                android.Manifest.permission.POST_NOTIFICATIONS,
             ) == PackageManager.PERMISSION_GRANTED -> {
-
             }
 
             shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS) -> {
@@ -86,13 +80,11 @@ class MainActivity : ComponentActivity(), InternetConnectionCallback {
         }
     }
 
-    private val requestNotificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {
-
-
-    }
-
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) {
+        }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun showPermissionRationale() {

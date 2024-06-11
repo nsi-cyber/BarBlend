@@ -4,7 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 
-
 object Destination {
     const val SPLASH = "splash"
     const val EXPLORE = "explore_screen"
@@ -13,7 +12,6 @@ object Destination {
     const val RANDOM_DETAIL = "random_detail_screen"
     const val COCKTAIL_DETAIL = "cocktail_detail_screen"
     const val FAVORITE_DETAIL = "favorite_detail_screen"
-
 }
 
 fun NavOptionsBuilder.popUpToTop(navController: NavController) {
@@ -23,15 +21,14 @@ fun NavOptionsBuilder.popUpToTop(navController: NavController) {
 }
 
 class NavigationActions(private val navController: NavHostController) {
-
     fun navigateToFavorites() {
-        navController.navigate(Destination.FAVORITES){
+        navController.navigate(Destination.FAVORITES) {
             popUpToTop(navController)
         }
     }
 
     fun navigateToSearch() {
-        navController.navigate(Destination.SEARCH){
+        navController.navigate(Destination.SEARCH) {
             popUpToTop(navController)
         }
     }
@@ -57,6 +54,4 @@ class NavigationActions(private val navController: NavHostController) {
     fun navigateToFavoriteDetail(id: String) {
         navController.navigate("${Destination.FAVORITE_DETAIL}?id=$id")
     }
-
-
 }
