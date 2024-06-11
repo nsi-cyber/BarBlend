@@ -22,12 +22,14 @@ class NotificationWorker @Inject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            Log.e("doWork: ", "NotificationWorker Successful")
+            Log.d("NotificationWorker: doWork/ ", "Started ")
             getLatestCocktailsUseCase.invoke().collect { result ->
                 when (result) {
                     is ApiResult.Error -> {}
                     ApiResult.Loading -> {}
                     is ApiResult.Success -> {
+                        Log.d("NotificationWorker: doWork/ ", "ApiResult.Success ")
+
                         comparePreferencesUseCase(result.data?.drinks.toString())
                             .collect { resultCompare ->
                                 when (resultCompare) {

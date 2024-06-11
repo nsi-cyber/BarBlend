@@ -41,15 +41,19 @@ class FavoriteDetailScreenViewModel @Inject constructor(
                 state.copy(
                     bottomSheetData = state.bottomSheetData.copy(
                         bottomSheetState = FavoriteDetailBottomSheetState.onDismiss,
-                        text = null
+                        text = null,
+                        suggestion = null
+
                     )
                 )
             }
+
+            is FavoriteDetailScreenEvent.StartPage -> getCocktailDetail(event.id)
         }
     }
 
 
-    fun getCocktailDetail(id: String?) {
+    private fun getCocktailDetail(id: String?) {
         viewModelScope.launch {
             getCocktailDetailsUseCase(id).onEach { result ->
                 when (result) {

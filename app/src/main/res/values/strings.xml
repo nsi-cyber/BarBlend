@@ -1,3 +1,50 @@
 <resources>
     <string name="app_name">BarBlend</string>
+    <string name="no_result_subtitle">Check the spelling or try a new search</string>
+    <string name="no_result_title">No Result</string>
+    <string name="no_recent_title">No Recent</string>
+    <string name="no_recent_subtitle">See recently viewed cocktails here.</string>
+    <string name="search_title">Search</string>
+    <string name="search_subtitle">Results</string>
+    <string name="recent_title">Recently</string>
+    <string name="recent_subtitle">Viewed</string>
+
+
+
+    <string name="tags_title">Tags</string>
+    <string name="prepare_title">How to</string>
+    <string name="prepare_subtitle">Prepare</string>
+    <string name="glass_title">Glass</string>
+    <string name="ingredients_title">Needed</string>
+    <string name="ingredients_subtitle">Ingredients</string>
+    <string name="no_favorite_title">No Favorite</string>
+    <string name="no_favorite_subtitle">You can explore new cocktails to add favorite.</string>
+    <string name="favorite_title">Favorite</string>
+    <string name="favorite_subtitle">Cocktails</string>
+    <string name="last_added_title">Last Added</string>
+    <string name="last_added_subtitle">Cocktails</string>
+    <string name="search_placeholder">Discover Drinks…</string>
+
+    <string name="popular_cocktails_title">Popular</string>
+    <string name="popular_cocktails_subtitle">Cocktails</string>
+
+    <string name="suggestion_title">Suggestion</string>
+    <string name="suggestion_subtitle">From You</string>
+
+
+
+
+
+    <string name="bottom_sheet_placeholder">Add you suggestions here…</string>
+    <string name="bottom_sheet_button">Add you suggestions here…</string>
+    <string name="feeling_luck_button_title">Feeling</string>
+    <string name="feeling_luck_button_subtitle">Lucky</string>
+
+
+
+
+
+    <string name="ic_search_cd">Search Icon</string>
+    <string name="ic_favorite_cd">Favorite Icon</string>
+
 </resources>

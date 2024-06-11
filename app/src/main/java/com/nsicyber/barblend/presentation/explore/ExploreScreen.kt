@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -82,21 +83,24 @@ fun ExploreScreen(
                     onClick = { navAction.navigateToRandomDetail() },
                     shape = RoundedCornerShape(99.dp),
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Column (horizontalAlignment = Alignment.CenterHorizontally){
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "Feeling",
-                                fontSize = 18.sp,
+                                text = stringResource(id = R.string.feeling_luck_button_title),
+                                fontSize = 14.sp,
                             )
                             Text(
-                                text = "Lucky",
-                                fontSize = 18.sp,
+                                text = stringResource(id = R.string.feeling_luck_button_subtitle),
+                                fontSize = 14.sp,
                             )
                         }
 
                         Text(
                             text = "?",
-                            fontSize = 30.sp,
+                            fontSize = 32.sp,
                         )
                     }
 
@@ -117,7 +121,8 @@ fun ExploreScreen(
                     }
 
                     item {
-                        LatestCocktailsSectionTitle()
+                        if (!cocktails.data.latestCocktails.isNullOrEmpty())
+                            LatestCocktailsSectionTitle()
                     }
 
                     items(
@@ -128,6 +133,16 @@ fun ExploreScreen(
                                 navAction.navigateToCocktailDetail(redirectId.toString())
                             }
                         }
+                    }
+
+
+                    item {
+                        if(cocktails.data.popularCocktails.isNullOrEmpty()&&cocktails.data.latestCocktails.isNullOrEmpty())
+                            Box(modifier = Modifier.clickable {
+                                viewModel.onEvent(ExploreScreenEvent.StartPage)
+                            }.padding(24.dp)){
+                                Text(text = "Error while fetching data. Click to retry")
+                            }
                     }
                 }
             }
@@ -155,7 +170,7 @@ fun PopularCocktailsSection(navAction: NavigationActions, popularCocktails: List
             modifier = Modifier.padding(start = 16.dp, top = 32.dp, bottom = 8.dp)
         ) {
             Text(
-                text = "Popular",
+                text = stringResource(id = R.string.popular_cocktails_title),
                 color = Color.Gray,
                 fontSize = 22.sp,
                 textAlign = TextAlign.Start,
@@ -163,7 +178,7 @@ fun PopularCocktailsSection(navAction: NavigationActions, popularCocktails: List
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = "Cocktails",
+                text = stringResource(id = R.string.popular_cocktails_subtitle),
                 fontSize = 28.sp,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Bold,
@@ -187,7 +202,7 @@ fun PopularCocktailsSection(navAction: NavigationActions, popularCocktails: List
 @Composable
 fun SearchSection(navAction: NavigationActions) {
     Text(
-        text = "Search",
+        text = stringResource(id = R.string.search_title),
         fontSize = 28.sp,
         textAlign = TextAlign.Start,
         fontWeight = FontWeight.Bold,
@@ -214,7 +229,7 @@ fun SearchSection(navAction: NavigationActions) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Discover Drinks...",
+                text = stringResource(id = R.string.search_placeholder),
                 color = Color.Black,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Start,
@@ -237,7 +252,7 @@ fun LatestCocktailsSectionTitle() {
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
     ) {
         Text(
-            text = "Last Added",
+            text = stringResource(id = R.string.last_added_title),
             color = Color.Gray,
             fontSize = 22.sp,
             textAlign = TextAlign.Start,
@@ -245,7 +260,7 @@ fun LatestCocktailsSectionTitle() {
             modifier = Modifier.fillMaxWidth()
         )
         Text(
-            text = "Cocktails",
+            text = stringResource(id = R.string.last_added_subtitle),
             fontSize = 28.sp,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold,
@@ -253,3 +268,5 @@ fun LatestCocktailsSectionTitle() {
         )
     }
 }
+
+

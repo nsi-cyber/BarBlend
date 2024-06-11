@@ -25,5 +25,5 @@ enum class BottomSheetState { onInput, onDismiss, onMessage }
 
 
 fun CocktailDetailScreenData?.isContent(): Boolean {
-    return this?.cocktailDetail != null && this.isFavorite != null
+    return !this?.cocktailDetail.isNullOrEmpty() && this?.isFavorite != null
 }

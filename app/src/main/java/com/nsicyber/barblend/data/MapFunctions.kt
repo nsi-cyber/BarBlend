@@ -78,49 +78,49 @@ fun CocktailModel.toFavLocal(): CocktailFavoriteLocal {
 
 fun extractIngredients(data: CocktailRemote): List<IngredientModel> {
     val temp = arrayListOf<IngredientModel>()
-    data.strIngredient1?.let {
+    data.strIngredient1?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure1.orEmpty()))
     }
-    data.strIngredient2?.let {
+    data.strIngredient2?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure2.orEmpty()))
     }
-    data.strIngredient3?.let {
+    data.strIngredient3?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure3.orEmpty()))
     }
-    data.strIngredient4?.let {
+    data.strIngredient4?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure4.orEmpty()))
     }
-    data.strIngredient5?.let {
+    data.strIngredient5?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure5.orEmpty()))
     }
-    data.strIngredient6?.let {
+    data.strIngredient6?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure6.orEmpty()))
     }
-    data.strIngredient7?.let {
+    data.strIngredient7?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure7.orEmpty()))
     }
-    data.strIngredient8?.let {
+    data.strIngredient8?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure8.orEmpty()))
     }
-    data.strIngredient9?.let {
+    data.strIngredient9?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure9.orEmpty()))
     }
-    data.strIngredient10?.let {
+    data.strIngredient10?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure10.orEmpty()))
     }
-    data.strIngredient11?.let {
+    data.strIngredient11?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure11.orEmpty()))
     }
-    data.strIngredient12?.let {
+    data.strIngredient12?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure12.orEmpty()))
     }
-    data.strIngredient13?.let {
+    data.strIngredient13?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure13.orEmpty()))
     }
-    data.strIngredient14?.let {
+    data.strIngredient14?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure14.orEmpty()))
     }
-    data.strIngredient15?.let {
+    data.strIngredient15?.takeIf { it.isNotEmpty() }?.let {
         temp.add(IngredientModel(ingredient = it, measure = data.strMeasure15.orEmpty()))
     }
     return temp.toList()

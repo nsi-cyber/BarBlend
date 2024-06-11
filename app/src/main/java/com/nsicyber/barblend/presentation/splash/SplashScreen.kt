@@ -27,8 +27,6 @@ fun SplashScreen(
         onSplashFinished()
     }
 
-    // center of text
-
         Box(
             modifier = Modifier
                 .fillMaxSize(), contentAlignment = Alignment.Center

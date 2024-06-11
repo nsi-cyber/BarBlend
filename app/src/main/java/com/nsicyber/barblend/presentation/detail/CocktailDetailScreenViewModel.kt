@@ -67,15 +67,24 @@ class CocktailDetailScreenViewModel @Inject constructor(
                 state.copy(
                     bottomSheetData = state.bottomSheetData.copy(
                         bottomSheetState = BottomSheetState.onDismiss,
-                        text = null
+                        text = null,
+                        suggestion = null
+
                     )
                 )
+            }
+
+
+
+            is CocktailDetailScreenEvent.StartPage -> {
+                getCocktailDetail(event.id)
+                isCocktailFavorite(event.id)
             }
         }
     }
 
 
-    fun getCocktailDetail(id: String?) {
+    private fun getCocktailDetail(id: String?) {
         viewModelScope.launch {
             getCocktailByIdUseCase(id).onEach { result ->
                 when (result) {
@@ -115,7 +124,7 @@ class CocktailDetailScreenViewModel @Inject constructor(
         }
     }
 
-    fun isCocktailFavorite(id: String?) {
+    private fun isCocktailFavorite(id: String?) {
         viewModelScope.launch {
             isFavoriteCocktailUseCase(id).onEach { result ->
                 when (result) {

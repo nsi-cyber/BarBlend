@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -67,6 +68,7 @@ object InternetConnectionObserver {
 
         override fun onLost(network: Network) {
             validNetworks.remove(network)
+            Log.d("InternetConnectionObserver: onLost/ ", network.toString() )
             checkValidNetworks()
         }
     }
@@ -74,8 +76,12 @@ object InternetConnectionObserver {
     private fun checkValidNetworks() {
         if (validNetworks.size > 0) {
             connectionCallback?.onConnected()
+            Log.d("InternetConnectionObserver:  ", "onConnected ")
+
         } else {
             connectionCallback?.onDisconnected()
+            Log.d("InternetConnectionObserver:  ", "onDisconnected ")
+
         }
     }
 

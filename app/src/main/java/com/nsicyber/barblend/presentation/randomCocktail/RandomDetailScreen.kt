@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -115,7 +116,7 @@ fun RandomDetailScreen(
 
                 if (cocktails.bottomSheetData.bottomSheetState == RandomBottomSheetState.onInput) {
                     TextField(
-                        placeholder = { Text(text = "You Can add notes") },
+                        placeholder = { Text(text = stringResource(id = R.string.bottom_sheet_placeholder)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(20.dp))
@@ -141,243 +142,253 @@ fun RandomDetailScreen(
 
                             .background(MaterialTheme.colorScheme.primaryContainer)
                             .fillMaxWidth()
-                            .padding(16.dp)                            .clickable { viewModel.onEvent(
-                               RandomDetailScreenEvent.AddToFavorites) }
-                        ,
+                            .padding(16.dp)
+                            .clickable {
+                                viewModel.onEvent(
+                                    RandomDetailScreenEvent.AddToFavorites
+                                )
+                            },
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "Favorite")
+                        Text(text = stringResource(id = R.string.bottom_sheet_button))
                     }
                 }
             }
         },
         sheetPeekHeight = 0.dp
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(4 / 5f)
+        if (!cocktails.isLoading)
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState())
                 ) {
-                    AsyncImage(
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        model = cocktails.data.cocktailDetail?.first()?.image,
-                        contentDescription = ""
-                    )
                     Box(
                         modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(16.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .clickable {
-                                if (cocktails.data.isFavorite == true) {
-                                    viewModel.onEvent(RandomDetailScreenEvent.RemoveFromFavorites)
-                                } else {
-                                    viewModel.onEvent(RandomDetailScreenEvent.OpenSuggestionBottomSheet)
-
-                                }
-                            }
-                            .size(64.dp)
-                            .alpha(0.7f)
-                            .background(Color.Gray),
-                        contentAlignment = Alignment.Center
+                            .fillMaxSize()
+                            .aspectRatio(4 / 5f)
                     ) {
-                        Image(
-                            colorFilter = if (cocktails.data.isFavorite == true) ColorFilter.tint(
-                                Color.Red
-                            ) else null,
-                            painter = painterResource(id = R.drawable.ic_menu_favorite),
+                        AsyncImage(
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            model = cocktails.data.cocktailDetail?.first()?.image,
                             contentDescription = ""
                         )
-                    }
-                }
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(16.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                                .clickable {
+                                    if (cocktails.data.isFavorite == true) {
+                                        viewModel.onEvent(RandomDetailScreenEvent.RemoveFromFavorites)
+                                    } else {
+                                        viewModel.onEvent(RandomDetailScreenEvent.OpenSuggestionBottomSheet)
 
-
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-
-                    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
-
-                        Text(
-                            text = cocktails.data.cocktailDetail?.first()?.title.orEmpty(),
-                            fontSize = 28.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Text(
-                            text = cocktails.data.cocktailDetail?.first()?.category.orEmpty()
-                        )
-                    }
-
-                    cocktails.data.cocktailDetail?.first()?.tags?.let {
-                        Column {
-                            Text(
-                                text = "Tags",
-                                color = Color.Gray,
-                                fontSize = 22.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 16.dp)
-                            )
-
-
-                            LazyHorizontalStaggeredGrid(
-                                contentPadding = PaddingValues(start = 16.dp),
-                                modifier = Modifier.height(72.dp),
-                                rows = StaggeredGridCells.Fixed(2)
-                            ) {
-                                items(
-                                    cocktails.data.cocktailDetail?.first()?.tags?.size ?: 0
-                                ) { index ->
-                                    KeywordCardItem(
-                                        cocktails.data.cocktailDetail?.first()?.tags?.get(
-                                            index
-                                        )
-                                    )
+                                    }
                                 }
-
-                            }
-                        }
-                    }
-
-
-                    cocktails.data.cocktailDetail?.first()?.instructions?.let {
-                        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                            Text(
-                                text = "How to",
-                                color = Color.Gray,
-                                fontSize = 22.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier.fillMaxWidth()
+                                .size(64.dp)
+                                .alpha(0.7f)
+                                .background(Color.Gray),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                colorFilter = if (cocktails.data.isFavorite == true) ColorFilter.tint(
+                                    Color.Red
+                                ) else null,
+                                painter = painterResource(id = R.drawable.ic_menu_favorite),
+                                contentDescription = stringResource(id = R.string.ic_favorite_cd)
                             )
-                            Text(
-                                text = "Prepare",
-                                fontSize = 28.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Spacer(Modifier.height(8.dp))
-
-                            Text(
-                                text = cocktails.data.cocktailDetail?.first()?.instructions.orEmpty(),
-                                fontSize = 22.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-
                         }
                     }
 
 
 
-                    cocktails.data.cocktailDetail?.first()?.glass?.let {
-                        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                            Text(
-                                text = "Glass",
-                                color = Color.Gray,
-                                fontSize = 22.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Text(
-                                text = cocktails.data.cocktailDetail?.first()?.glass.orEmpty(),
-                                fontSize = 28.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
 
-
-                        }
-                    }
-
-
-                    cocktails.data.cocktailDetail?.first()?.ingredients?.let {
                         Column(
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
-                                bottom = 32.dp
+                                top = 16.dp
                             )
                         ) {
-
                             Text(
-                                text = "Needed",
-                                color = Color.Gray,
-                                fontSize = 22.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier.fillMaxWidth()
+                                text = cocktails.data.cocktailDetail?.first()?.category.orEmpty()
                             )
                             Text(
-                                text = "Ingredients",
+                                text = cocktails.data.cocktailDetail?.first()?.title.orEmpty(),
                                 fontSize = 28.sp,
                                 textAlign = TextAlign.Start,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.fillMaxWidth()
                             )
-                            Spacer(Modifier.height(8.dp))
-
-                            Column {
-                                repeat(
-                                    cocktails.data.cocktailDetail?.first()?.ingredients?.size ?: 0
-                                ) { index ->
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-
-                                        Text(
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.weight(4.5f),
-                                            text = cocktails.data.cocktailDetail?.first()?.ingredients?.get(
-                                                index
-                                            )?.ingredient.orEmpty()
-                                        )
-
-
-                                        Text(
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.weight(1f),
-                                            text = " - "
-                                        )
-
-                                        Text(
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.weight(4.5f),
-                                            text = cocktails.data.cocktailDetail?.first()?.ingredients?.get(
-                                                index
-                                            )?.measure.orEmpty()
-                                        )
-
-                                    }
-                                }
-                            }
 
                         }
+
+                        cocktails.data.cocktailDetail?.first()?.tags?.let {
+                            Column {
+                                Text(
+                                    text = stringResource(id = R.string.tags_title),
+                                    color = Color.Gray,
+                                    fontSize = 22.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Normal,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 16.dp)
+                                )
+
+
+                                LazyHorizontalStaggeredGrid(
+                                    contentPadding = PaddingValues(start = 16.dp),
+                                    modifier = Modifier.height(72.dp),
+                                    rows = StaggeredGridCells.Fixed(2)
+                                ) {
+                                    items(
+                                        cocktails.data.cocktailDetail?.first()?.tags?.size ?: 0
+                                    ) { index ->
+                                        KeywordCardItem(
+                                            cocktails.data.cocktailDetail?.first()?.tags?.get(
+                                                index
+                                            )
+                                        )
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                        cocktails.data.cocktailDetail?.first()?.instructions?.let {
+                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                                Text(
+                                    text = stringResource(id = R.string.prepare_title),
+                                    color = Color.Gray,
+                                    fontSize = 22.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Normal,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.prepare_subtitle),
+                                    fontSize = 28.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Spacer(Modifier.height(8.dp))
+
+                                Text(
+                                    text = cocktails.data.cocktailDetail?.first()?.instructions.orEmpty(),
+                                    fontSize = 22.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Normal,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+
+                            }
+                        }
+
+
+
+                        cocktails.data.cocktailDetail?.first()?.glass?.let {
+                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                                Text(
+                                    text = stringResource(id = R.string.glass_title),
+                                    color = Color.Gray,
+                                    fontSize = 22.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Normal,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Text(
+                                    text = cocktails.data.cocktailDetail?.first()?.glass.orEmpty(),
+                                    fontSize = 28.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+
+
+                            }
+                        }
+
+
+                        cocktails.data.cocktailDetail?.first()?.ingredients?.let {
+                            Column(
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 32.dp
+                                )
+                            ) {
+
+                                Text(
+                                    text = stringResource(id = R.string.ingredients_title),
+                                    color = Color.Gray,
+                                    fontSize = 22.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Normal,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.ingredients_subtitle),
+                                    fontSize = 28.sp,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Spacer(Modifier.height(8.dp))
+
+                                Column {
+                                    repeat(
+                                        cocktails.data.cocktailDetail?.first()?.ingredients?.size
+                                            ?: 0
+                                    ) { index ->
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+
+                                            Text(
+                                                textAlign = TextAlign.Center,
+                                                modifier = Modifier.weight(4.5f),
+                                                text = cocktails.data.cocktailDetail?.first()?.ingredients?.get(
+                                                    index
+                                                )?.ingredient.orEmpty()
+                                            )
+
+
+                                            Text(
+                                                textAlign = TextAlign.Center,
+                                                modifier = Modifier.weight(1f),
+                                                text = " - "
+                                            )
+
+                                            Text(
+                                                textAlign = TextAlign.Center,
+                                                modifier = Modifier.weight(4.5f),
+                                                text = cocktails.data.cocktailDetail?.first()?.ingredients?.get(
+                                                    index
+                                                )?.measure.orEmpty()
+                                            )
+
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
                     }
 
                 }
 
             }
-
-        }
-
-        if (cocktails.isLoading) {
+        else
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -386,6 +397,5 @@ fun RandomDetailScreen(
             ) {
                 CircularProgressIndicator()
             }
-        }
     }
 }

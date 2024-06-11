@@ -16,12 +16,9 @@ fun <T> apiFlow(
 ): Flow<ApiResult<T>> = flow {
     emit(ApiResult.Loading)
     try {
-        Log.e("ApiFlow", "apiFlow")
         val c = call()
         c?.let {
-            Log.e("ApiFlow", "apiFlow c: ${c.isSuccessful}")
             if (c.isSuccessful) {
-                Log.e("ApiFlow", "apiFlow c.body: ${c.body()}")
                 emit(ApiResult.Success(c.body()))
             } else {
                 val errorBody = c.errorBody()?.string()

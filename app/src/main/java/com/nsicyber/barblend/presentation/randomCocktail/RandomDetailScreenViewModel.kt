@@ -67,7 +67,8 @@ class RandomDetailScreenViewModel @Inject constructor(
                 state.copy(
                     bottomSheetData = state.bottomSheetData.copy(
                         bottomSheetState = RandomBottomSheetState.onDismiss,
-                        text = null
+                        text = null,
+                        suggestion = null
                     )
                 )
             }

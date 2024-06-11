@@ -2,6 +2,7 @@ package com.nsicyber.barblend.di
 
 import android.content.Context
 import androidx.room.Room
+import com.nsicyber.barblend.common.Constants
 import com.nsicyber.barblend.data.local.dao.CocktailsDao
 import com.nsicyber.barblend.data.local.database.CocktailDatabase
 import com.nsicyber.barblend.data.repository.DatabaseRepositoryImpl
@@ -23,7 +24,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             appContext,
             CocktailDatabase::class.java,
-            "cocktail_database"
+            Constants.COCKTAIL_DATABASE_NAME
         ).build()
     }
 

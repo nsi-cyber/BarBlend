@@ -3,6 +3,11 @@ package com.nsicyber.barblend.presentation.navigation
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -115,9 +120,14 @@ fun NavigationGraph( isConnected: Boolean,
 
     Scaffold(
         bottomBar = {
-            if (showBottomBar) {
+            AnimatedVisibility(
+                visible = showBottomBar,
+                enter = slideInVertically(initialOffsetY = { it })+fadeIn(),
+                exit = slideOutVertically(targetOffsetY = { it })+fadeOut()
+            ) {
                 BottomNavigationBar(navController = navController)
             }
+
         }
     ) { innerPadding ->
         NavHost(

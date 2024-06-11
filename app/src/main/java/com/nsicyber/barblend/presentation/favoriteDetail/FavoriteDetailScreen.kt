@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -69,7 +70,7 @@ fun FavoriteDetailScreen(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.getCocktailDetail(cocktailId)
+        viewModel.onEvent(FavoriteDetailScreenEvent.StartPage(cocktailId))
     }
     LaunchedEffect(cocktails.isRemoved) {
         if (cocktails.isRemoved)
@@ -161,7 +162,9 @@ fun FavoriteDetailScreen(
                 ) {
 
                     Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
-
+                        Text(
+                            text = cocktails.data.cocktailDetail?.first()?.category.orEmpty()
+                        )
                         Text(
                             text = cocktails.data.cocktailDetail?.first()?.title.orEmpty(),
                             fontSize = 28.sp,
@@ -169,15 +172,13 @@ fun FavoriteDetailScreen(
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Text(
-                            text = cocktails.data.cocktailDetail?.first()?.category.orEmpty()
-                        )
+
                     }
 
                     cocktails.data.cocktailDetail?.first()?.tags?.let {
                         Column {
                             Text(
-                                text = "Tags",
+                                text = stringResource(id = R.string.tags_title),
                                 color = Color.Gray,
                                 fontSize = 22.sp,
                                 textAlign = TextAlign.Start,
@@ -207,42 +208,11 @@ fun FavoriteDetailScreen(
                         }
                     }
 
-
-                    cocktails.data.cocktailDetail?.first()?.instructions?.let {
-                        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                            Text(
-                                text = "How to",
-                                color = Color.Gray,
-                                fontSize = 22.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Text(
-                                text = "Prepare",
-                                fontSize = 28.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Spacer(Modifier.height(8.dp))
-
-                            Text(
-                                text = cocktails.data.cocktailDetail?.first()?.instructions.orEmpty(),
-                                fontSize = 22.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-
-                        }
-                    }
-
                     cocktails.data.cocktailDetail?.first()?.suggestion?.let { suggestionText ->
                         if (suggestionText.isNotBlank()) {
                             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
                                 Text(
-                                    text = "Suggestion",
+                                    text = stringResource(id = R.string.suggestion_title),
                                     color = Color.Gray,
                                     fontSize = 22.sp,
                                     textAlign = TextAlign.Start,
@@ -250,7 +220,7 @@ fun FavoriteDetailScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 )
                                 Text(
-                                    text = "From You",
+                                    text = stringResource(id = R.string.suggestion_subtitle),
                                     fontSize = 28.sp,
                                     textAlign = TextAlign.Start,
                                     fontWeight = FontWeight.Bold,
@@ -271,10 +241,42 @@ fun FavoriteDetailScreen(
                     }
 
 
+                    cocktails.data.cocktailDetail?.first()?.instructions?.let {
+                        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                            Text(
+                                text = stringResource(id = R.string.prepare_title),
+                                color = Color.Gray,
+                                fontSize = 22.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Text(
+                                text = stringResource(id = R.string.prepare_subtitle),
+                                fontSize = 28.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Spacer(Modifier.height(8.dp))
+
+                            Text(
+                                text = cocktails.data.cocktailDetail?.first()?.instructions.orEmpty(),
+                                fontSize = 22.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                        }
+                    }
+
+
+
                     cocktails.data.cocktailDetail?.first()?.glass?.let {
                         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
                             Text(
-                                text = "Glass",
+                                text = stringResource(id = R.string.glass_title),
                                 color = Color.Gray,
                                 fontSize = 22.sp,
                                 textAlign = TextAlign.Start,
@@ -304,7 +306,7 @@ fun FavoriteDetailScreen(
                         ) {
 
                             Text(
-                                text = "Needed",
+                                text = stringResource(id = R.string.ingredients_title),
                                 color = Color.Gray,
                                 fontSize = 22.sp,
                                 textAlign = TextAlign.Start,
@@ -312,7 +314,7 @@ fun FavoriteDetailScreen(
                                 modifier = Modifier.fillMaxWidth()
                             )
                             Text(
-                                text = "Ingredients",
+                                text = stringResource(id = R.string.ingredients_subtitle),
                                 fontSize = 28.sp,
                                 textAlign = TextAlign.Start,
                                 fontWeight = FontWeight.Bold,

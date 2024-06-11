@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,11 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nsicyber.barblend.R
 import com.nsicyber.barblend.presentation.components.SearchCocktailCardView
 import com.nsicyber.barblend.presentation.navigation.NavigationActions
 
@@ -55,7 +58,7 @@ fun FavoriteListScreen(
 
             Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
                 Text(
-                    text = "Favorite",
+                    text = stringResource(id = R.string.favorite_title),
                     color = Color.Gray,
                     fontSize = 22.sp,
                     textAlign = TextAlign.Start,
@@ -63,7 +66,7 @@ fun FavoriteListScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = "Cocktails",
+                    text = stringResource(id = R.string.favorite_subtitle),
                     fontSize = 28.sp,
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.Bold,
@@ -79,13 +82,13 @@ fun FavoriteListScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "No Favorite",
+                            text = stringResource(id = R.string.no_favorite_title),
                             fontSize = 28.sp,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold,
                         )
                         Text(
-                            text = "You can explore new cocktails to add favorite.",
+                            text = stringResource(id = R.string.no_favorite_subtitle),
                             fontSize = 18.sp,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Normal,
@@ -99,9 +102,9 @@ fun FavoriteListScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     contentPadding = PaddingValues(16.dp)
                 ) {
-                    items(cocktails.data.favoriteCocktails?.size ?: 0) {
-                        SearchCocktailCardView(model = cocktails.data.favoriteCocktails?.get(it)!!) {
-                            navAction.navigateToFavoriteDetail(it!!)
+                    items(cocktails.data.favoriteCocktails.orEmpty(), key = {item-> item?.id.toString()}) {model->
+                        SearchCocktailCardView(model = model) {
+                            navAction.navigateToFavoriteDetail(it)
                         }
                     }
                 }
