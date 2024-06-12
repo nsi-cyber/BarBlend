@@ -4,9 +4,9 @@ BarBlend is a mobile application that allows you to discover cocktail recipes, s
 
 
 <p align="center">
-  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/db0a3791-cf3a-4f9d-b327-227c4ca98ea0" width="300" />
-  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/2955a531-97fd-4faf-b159-b8a288219646" width="300" />
-  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/0f81a8c1-e9a3-420f-bfa2-7be30e2feea4" width="300" />
+  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/db0a3791-cf3a-4f9d-b327-227c4ca98ea0" width="200" />
+  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/2955a531-97fd-4faf-b159-b8a288219646" width="200" />
+  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/0f81a8c1-e9a3-420f-bfa2-7be30e2feea4" width="200" />
 </p>
 
 ## Features
