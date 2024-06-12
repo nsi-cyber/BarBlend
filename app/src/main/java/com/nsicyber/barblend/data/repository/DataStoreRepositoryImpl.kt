@@ -9,7 +9,5 @@ class DataStoreRepositoryImpl
     @Inject
     constructor(private val dataStoreManager: DataStoreManager) :
     DataStoreRepository {
-        override suspend fun compareCocktails(newData: String): Flow<Boolean?> {
-            return dataStoreManager.compare(newData)
-        }
+        override suspend fun compareCocktails(newData: String): Flow<Boolean?> = dataStoreManager.compare(newData)
     }

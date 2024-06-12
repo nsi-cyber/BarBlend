@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -40,14 +38,17 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
+import com.nsicyber.barblend.presentation.components.CustomBottomSheetView
+import com.nsicyber.barblend.presentation.components.IngredientItemView
 import com.nsicyber.barblend.presentation.components.KeywordCardItem
+import com.nsicyber.barblend.presentation.components.SubHeaderHeaderTitleView
+import com.nsicyber.barblend.presentation.detail.BottomSheetState
 import com.nsicyber.barblend.presentation.navigation.NavigationActions
 import kotlinx.coroutines.launch
 
@@ -77,15 +78,33 @@ fun FavoriteDetailScreen(
 
     LaunchedEffect(cocktails) {
         when (cocktails.bottomSheetData.bottomSheetState) {
-            FavoriteDetailBottomSheetState.onMessage -> {
+            BottomSheetState.OnInput -> {
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.expand()
                 }
             }
 
-            FavoriteDetailBottomSheetState.onDismiss -> {
+            BottomSheetState.OnFavoriteMessage -> {
+                coroutineScope.launch {
+                    bottomSheetState.bottomSheetState.expand()
+                }
+            }
+
+            BottomSheetState.OnDismiss -> {
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.hide()
+                }
+            }
+
+            BottomSheetState.OnRemoveMessage -> {
+                coroutineScope.launch {
+                    bottomSheetState.bottomSheetState.expand()
+                }
+            }
+
+            BottomSheetState.OnError -> {
+                coroutineScope.launch {
+                    bottomSheetState.bottomSheetState.expand()
                 }
             }
         }
@@ -94,19 +113,13 @@ fun FavoriteDetailScreen(
         BottomSheetScaffold(
             scaffoldState = bottomSheetState,
             sheetContent = {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                ) {
-                    Text(
-                        text = cocktails.bottomSheetData.text.orEmpty(),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.White,
-                    )
-                }
+                CustomBottomSheetView(
+                    bottomSheetState = cocktails.bottomSheetData.bottomSheetState,
+                    suggestionValue = "",
+                    onValueChange = {
+                    },
+                    onButtonClicked = { },
+                )
             },
             sheetPeekHeight = 0.dp,
         ) {
@@ -126,7 +139,7 @@ fun FavoriteDetailScreen(
                                 Modifier
                                     .fillMaxSize(),
                             model = cocktails.data.cocktailDetail?.image,
-                            contentDescription = "",
+                            contentDescription = stringResource(id = R.string.content_desc_cocktail_image),
                         )
                         Box(
                             modifier =
@@ -152,7 +165,7 @@ fun FavoriteDetailScreen(
                                         null
                                     },
                                 painter = painterResource(id = R.drawable.ic_menu_favorite),
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_add_favorite),
                             )
                         }
                     }
@@ -179,7 +192,7 @@ fun FavoriteDetailScreen(
                             )
                         }
 
-                        cocktails.data.cocktailDetail?.tags?.let {
+                        cocktails.data.cocktailDetail?.tags?.takeIf { it.isNotEmpty() }.let {
                             Column {
                                 Text(
                                     text = stringResource(id = R.string.tags_title),
@@ -208,8 +221,8 @@ fun FavoriteDetailScreen(
                             }
                         }
 
-                        cocktails.data.cocktailDetail?.suggestion?.let { suggestionText ->
-                            if (suggestionText.isNotBlank()) {
+                        cocktails.data.cocktailDetail?.suggestion?.takeIf { it.isNotEmpty() }
+                            .let { suggestionText ->
                                 Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
                                     Text(
                                         text = stringResource(id = R.string.suggestion_title),
@@ -223,108 +236,63 @@ fun FavoriteDetailScreen(
                                     )
                                     Spacer(Modifier.height(8.dp))
                                     Text(
-                                        text = cocktails.data.cocktailDetail?.suggestion.orEmpty(),
+                                        text = suggestionText.orEmpty(),
                                         style = BarBlendTextStyles.body,
                                         modifier = Modifier.fillMaxWidth(),
                                     )
                                 }
                             }
+                    }
+
+                    cocktails.data.cocktailDetail?.instructions?.takeIf { it.isNotEmpty() }?.let {
+                        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                            SubHeaderHeaderTitleView(
+                                subheader = stringResource(id = R.string.prepare_title),
+                                header = stringResource(id = R.string.prepare_subtitle),
+                            )
+                            Spacer(Modifier.height(8.dp))
+
+                            Text(
+                                text = cocktails.data.cocktailDetail?.instructions.orEmpty(),
+                                style = BarBlendTextStyles.body,
+                                modifier = Modifier.fillMaxWidth(),
+                            )
                         }
+                    }
 
-                        cocktails.data.cocktailDetail?.instructions?.let {
-                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                                Text(
-                                    text = stringResource(id = R.string.prepare_title),
-                                    style = BarBlendTextStyles.subheader,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Text(
-                                    text = stringResource(id = R.string.prepare_subtitle),
-                                    style = BarBlendTextStyles.header,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Spacer(Modifier.height(8.dp))
-
-                                Text(
-                                    text = cocktails.data.cocktailDetail?.instructions.orEmpty(),
-                                    style = BarBlendTextStyles.body,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                            }
+                    cocktails.data.cocktailDetail?.glass?.takeIf { it.isNotEmpty() }?.let {
+                        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                            SubHeaderHeaderTitleView(
+                                subheader = stringResource(id = R.string.glass_title),
+                                header = cocktails.data.cocktailDetail?.glass.orEmpty(),
+                            )
                         }
+                    }
 
-                        cocktails.data.cocktailDetail?.glass?.let {
-                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                                Text(
-                                    text = stringResource(id = R.string.glass_title),
-                                    style = BarBlendTextStyles.subheader,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Text(
-                                    text = cocktails.data.cocktailDetail?.glass.orEmpty(),
-                                    style = BarBlendTextStyles.header,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                            }
-                        }
+                    cocktails.data.cocktailDetail?.ingredients?.takeIf { it.isNotEmpty() }?.let {
+                        Column(
+                            modifier =
+                                Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 32.dp,
+                                ),
+                        ) {
+                            SubHeaderHeaderTitleView(
+                                subheader = stringResource(id = R.string.ingredients_title),
+                                header = stringResource(id = R.string.ingredients_subtitle),
+                            )
+                            Spacer(Modifier.height(8.dp))
 
-                        cocktails.data.cocktailDetail?.ingredients?.let {
-                            Column(
-                                modifier =
-                                    Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp,
-                                        bottom = 32.dp,
-                                    ),
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.ingredients_title),
-                                    style = BarBlendTextStyles.subheader,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Text(
-                                    text = stringResource(id = R.string.ingredients_subtitle),
-                                    style = BarBlendTextStyles.header,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Spacer(Modifier.height(8.dp))
-
-                                Column {
-                                    repeat(
-                                        cocktails.data.cocktailDetail?.ingredients?.size ?: 0,
-                                    ) { index ->
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            Text(
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(4.5f),
-                                                text =
-                                                    cocktails.data.cocktailDetail?.ingredients?.get(
-                                                        index,
-                                                    )?.ingredient.orEmpty(),
-                                                style = BarBlendTextStyles.body,
-                                            )
-
-                                            Text(
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(1f),
-                                                text = " - ",
-                                                style = BarBlendTextStyles.body,
-                                            )
-
-                                            Text(
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(4.5f),
-                                                text =
-                                                    cocktails.data.cocktailDetail?.ingredients?.get(
-                                                        index,
-                                                    )?.measure.orEmpty(),
-                                                style = BarBlendTextStyles.body,
-                                            )
-                                        }
-                                    }
+                            Column {
+                                repeat(
+                                    cocktails.data.cocktailDetail?.ingredients?.size ?: 0,
+                                ) { index ->
+                                    IngredientItemView(
+                                        cocktails.data.cocktailDetail?.ingredients?.get(
+                                            index,
+                                        ),
+                                    )
                                 }
                             }
                         }

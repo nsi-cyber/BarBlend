@@ -18,7 +18,7 @@ class DataStoreManager
             val dataStoreKey = stringPreferencesKey(Constants.DataStore.USER_PREFERENCES_KEY)
             return context.dataStore.data.map { preferences ->
                 val currentData = preferences[dataStoreKey]
-                if (currentData != newData) {
+                if (currentData?.take(10) != newData.take(10)) {
                     context.dataStore.edit { prefs ->
                         prefs[dataStoreKey] = newData
                     }

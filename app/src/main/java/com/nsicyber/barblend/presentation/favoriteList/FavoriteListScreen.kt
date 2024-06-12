@@ -23,7 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
-import com.nsicyber.barblend.presentation.components.SearchCocktailCardView
+import com.nsicyber.barblend.presentation.components.HeaderSubHeaderTitleView
+import com.nsicyber.barblend.presentation.search.SearchCocktailCardView
 
 @Composable
 fun FavoriteListScreen(
@@ -44,15 +45,9 @@ fun FavoriteListScreen(
                     .padding(top = 16.dp),
         ) {
             Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
-                Text(
-                    text = stringResource(id = R.string.favorite_title),
-                    style = BarBlendTextStyles.subheader,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                Text(
-                    text = stringResource(id = R.string.favorite_subtitle),
-                    style = BarBlendTextStyles.header,
-                    modifier = Modifier.fillMaxWidth(),
+                HeaderSubHeaderTitleView(
+                    subheader = stringResource(id = R.string.favorite_title),
+                    header = stringResource(id = R.string.favorite_subtitle),
                 )
             }
             if (cocktails.data.favoriteCocktails?.isEmpty() == true) {

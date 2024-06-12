@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,11 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -43,14 +39,17 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
+import com.nsicyber.barblend.presentation.components.CustomBottomSheetView
+import com.nsicyber.barblend.presentation.components.IngredientItemView
 import com.nsicyber.barblend.presentation.components.KeywordCardItem
+import com.nsicyber.barblend.presentation.components.SubHeaderHeaderTitleView
+import com.nsicyber.barblend.presentation.detail.BottomSheetState
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,21 +74,33 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
     }
     LaunchedEffect(cocktails) {
         when (cocktails.bottomSheetData.bottomSheetState) {
-            RandomBottomSheetState.onInput -> {
+            BottomSheetState.OnInput -> {
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.expand()
                 }
             }
 
-            RandomBottomSheetState.onMessage -> {
+            BottomSheetState.OnFavoriteMessage -> {
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.expand()
                 }
             }
 
-            RandomBottomSheetState.onDismiss -> {
+            BottomSheetState.OnDismiss -> {
                 coroutineScope.launch {
                     bottomSheetState.bottomSheetState.hide()
+                }
+            }
+
+            BottomSheetState.OnRemoveMessage -> {
+                coroutineScope.launch {
+                    bottomSheetState.bottomSheetState.expand()
+                }
+            }
+
+            BottomSheetState.OnError -> {
+                coroutineScope.launch {
+                    bottomSheetState.bottomSheetState.expand()
                 }
             }
         }
@@ -98,59 +109,16 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
         BottomSheetScaffold(
             scaffoldState = bottomSheetState,
             sheetContent = {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                ) {
-                    Text(
-                        text = cocktails.bottomSheetData.text.orEmpty(),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-
-                    if (cocktails.bottomSheetData.bottomSheetState == RandomBottomSheetState.onInput) {
-                        TextField(
-                            placeholder = { Text(text = stringResource(id = R.string.bottom_sheet_placeholder)) },
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .background(color = Color.White),
-                            value = cocktails.bottomSheetData.suggestion.orEmpty(),
-                            onValueChange = { value ->
-                                viewModel.onEvent(RandomDetailScreenEvent.TypeSuggestion(value))
-                            },
-                            colors =
-                                TextFieldDefaults.textFieldColors(
-                                    cursorColor = Color.Black,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                    containerColor = Color.White,
-                                    disabledTextColor = Color.Black,
-                                    focusedTextColor = Color.Black,
-                                    unfocusedTextColor = Color.Black,
-                                ),
+                CustomBottomSheetView(
+                    bottomSheetState = cocktails.bottomSheetData.bottomSheetState,
+                    suggestionValue = cocktails.bottomSheetData.suggestion,
+                    onValueChange = { text ->
+                        viewModel.onEvent(
+                            RandomDetailScreenEvent.TypeSuggestion(text),
                         )
-                        Box(
-                            modifier =
-                                Modifier
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .background(MaterialTheme.colorScheme.primaryContainer)
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                                    .clickable {
-                                        viewModel.onEvent(
-                                            RandomDetailScreenEvent.AddToFavorites,
-                                        )
-                                    },
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(text = stringResource(id = R.string.bottom_sheet_button))
-                        }
-                    }
-                }
+                    },
+                    onButtonClicked = { viewModel.onEvent(RandomDetailScreenEvent.AddToFavorites) },
+                )
             },
             sheetPeekHeight = 0.dp,
         ) {
@@ -170,7 +138,7 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                                 Modifier
                                     .fillMaxSize(),
                             model = cocktails.data.cocktailDetail?.image,
-                            contentDescription = "",
+                            contentDescription = stringResource(id = R.string.content_desc_cocktail_image),
                         )
                         Box(
                             modifier =
@@ -227,7 +195,9 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                             )
                         }
 
-                        cocktails.data.cocktailDetail?.tags?.let {
+                        cocktails.data.cocktailDetail?.tags?.takeIf {
+                            it.isNotEmpty()
+                        }?.let {
                             Column {
                                 Text(
                                     text = stringResource(id = R.string.tags_title),
@@ -256,104 +226,62 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                             }
                         }
 
-                        cocktails.data.cocktailDetail?.instructions?.let {
-                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                                Text(
-                                    text = stringResource(id = R.string.prepare_title),
-                                    style = BarBlendTextStyles.subheader,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Text(
-                                    text = stringResource(id = R.string.prepare_subtitle),
-                                    style = BarBlendTextStyles.header,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Spacer(Modifier.height(8.dp))
+                        cocktails.data.cocktailDetail?.instructions?.takeIf { it.isNotEmpty() }
+                            ?.let {
+                                Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                                    SubHeaderHeaderTitleView(
+                                        subheader = stringResource(id = R.string.prepare_title),
+                                        header = stringResource(id = R.string.prepare_subtitle),
+                                    )
+                                    Spacer(Modifier.height(8.dp))
 
-                                Text(
-                                    text = cocktails.data.cocktailDetail?.instructions.orEmpty(),
-                                    style = BarBlendTextStyles.body,
-                                    modifier = Modifier.fillMaxWidth(),
+                                    Text(
+                                        text = cocktails.data.cocktailDetail?.instructions.orEmpty(),
+                                        style = BarBlendTextStyles.body,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                }
+                            }
+
+                        cocktails.data.cocktailDetail?.glass?.takeIf { it.isNotEmpty() }?.let {
+                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                                SubHeaderHeaderTitleView(
+                                    subheader = stringResource(id = R.string.glass_title),
+                                    header = cocktails.data.cocktailDetail?.glass.orEmpty(),
                                 )
                             }
                         }
 
-                        cocktails.data.cocktailDetail?.glass?.let {
-                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                                Text(
-                                    text = stringResource(id = R.string.glass_title),
-                                    style = BarBlendTextStyles.subheader,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Text(
-                                    text = cocktails.data.cocktailDetail?.glass.orEmpty(),
-                                    style = BarBlendTextStyles.header,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                            }
-                        }
+                        cocktails.data.cocktailDetail?.ingredients?.takeIf { it.isNotEmpty() }
+                            ?.let {
+                                Column(
+                                    modifier =
+                                        Modifier.padding(
+                                            start = 16.dp,
+                                            end = 16.dp,
+                                            bottom = 32.dp,
+                                        ),
+                                ) {
+                                    SubHeaderHeaderTitleView(
+                                        subheader = stringResource(id = R.string.ingredients_title),
+                                        header = stringResource(id = R.string.ingredients_subtitle),
+                                    )
+                                    Spacer(Modifier.height(8.dp))
 
-                        cocktails.data.cocktailDetail?.ingredients?.let {
-                            Column(
-                                modifier =
-                                    Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp,
-                                        bottom = 32.dp,
-                                    ),
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.ingredients_title),
-                                    style = BarBlendTextStyles.subheader,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Text(
-                                    text = stringResource(id = R.string.ingredients_subtitle),
-                                    style = BarBlendTextStyles.header,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                                Spacer(Modifier.height(8.dp))
-
-                                Column {
-                                    repeat(
-                                        cocktails.data.cocktailDetail?.ingredients?.size
-                                            ?: 0,
-                                    ) { index ->
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            Text(
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(4.5f),
-                                                text =
-                                                    cocktails.data.cocktailDetail?.ingredients?.get(
-                                                        index,
-                                                    )?.ingredient.orEmpty(),
-                                                style = BarBlendTextStyles.body,
-                                            )
-
-                                            Text(
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(1f),
-                                                text = " - ",
-                                                style = BarBlendTextStyles.body,
-                                            )
-
-                                            Text(
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(4.5f),
-                                                text =
-                                                    cocktails.data.cocktailDetail?.ingredients?.get(
-                                                        index,
-                                                    )?.measure.orEmpty(),
-                                                style = BarBlendTextStyles.body,
+                                    Column {
+                                        repeat(
+                                            cocktails.data.cocktailDetail?.ingredients?.size
+                                                ?: 0,
+                                        ) { index ->
+                                            IngredientItemView(
+                                                cocktails.data.cocktailDetail?.ingredients?.get(
+                                                    index,
+                                                ),
                                             )
                                         }
                                     }
                                 }
                             }
-                        }
                     }
                 }
             }

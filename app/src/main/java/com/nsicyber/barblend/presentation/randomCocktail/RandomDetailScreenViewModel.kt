@@ -9,6 +9,7 @@ import com.nsicyber.barblend.domain.useCase.database.RemoveCocktailUseCase
 import com.nsicyber.barblend.domain.useCase.database.SaveToFavoriteUseCase
 import com.nsicyber.barblend.domain.useCase.database.SaveToRecentUseCase
 import com.nsicyber.barblend.domain.useCase.network.GetRandomCocktailUseCase
+import com.nsicyber.barblend.presentation.detail.BottomSheetState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,8 +44,7 @@ class RandomDetailScreenViewModel
                         copy(
                             bottomSheetData =
                                 bottomSheetData.copy(
-                                    text = "Save cocktail to Favorite List",
-                                    bottomSheetState = RandomBottomSheetState.onInput,
+                                    bottomSheetState = BottomSheetState.OnInput,
                                 ),
                         )
                     }
@@ -66,8 +67,7 @@ class RandomDetailScreenViewModel
                         copy(
                             bottomSheetData =
                                 bottomSheetData.copy(
-                                    bottomSheetState = RandomBottomSheetState.onDismiss,
-                                    text = null,
+                                    bottomSheetState = BottomSheetState.OnDismiss,
                                     suggestion = null,
                                 ),
                         )
@@ -80,25 +80,27 @@ class RandomDetailScreenViewModel
 
         private fun getCocktailDetail() {
             viewModelScope.launch {
-                getRandomCocktailUseCase().onEach { result ->
-                    updateUiState {
-                        when (result) {
-                            is ApiResult.Error ->
-                                copy(
-                                    data = data.copy(cocktailDetail = null),
-                                )
+                getRandomCocktailUseCase().onStart { updateUiState { copy(isLoading = true) } }
+                    .onEach { result ->
+                        updateUiState {
+                            when (result) {
+                                is ApiResult.Error ->
+                                    copy(
+                                        data = data.copy(cocktailDetail = null),
+                                    )
 
-                            is ApiResult.Success -> {
-                                copy(
-                                    data = data.copy(cocktailDetail = result.data),
-                                ).also {
-                                    isCocktailFavorite(result.data?.id)
-                                    saveCocktailToRecent()
+                                is ApiResult.Success -> {
+                                    copy(
+                                        isLoading = false,
+                                        data = data.copy(cocktailDetail = result.data),
+                                    ).also {
+                                        isCocktailFavorite(result.data?.id)
+                                        saveCocktailToRecent()
+                                    }
                                 }
                             }
                         }
-                    }
-                }.launchIn(this)
+                    }.launchIn(this)
             }
         }
 
@@ -145,8 +147,7 @@ class RandomDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Error While Favoriting",
-                                                bottomSheetState = RandomBottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnError,
                                             ),
                                     ).also {
                                         scheduleBottomSheetDismiss()
@@ -159,8 +160,7 @@ class RandomDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Cocktail Added to Favorites",
-                                                bottomSheetState = RandomBottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnFavoriteMessage,
                                             ),
                                     ).also {
                                         scheduleBottomSheetDismiss()
@@ -184,8 +184,7 @@ class RandomDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Error While Removing",
-                                                bottomSheetState = RandomBottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnError,
                                             ),
                                     ).also {
                                         scheduleBottomSheetDismiss()
@@ -198,8 +197,7 @@ class RandomDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Cocktail Removed from Favorites",
-                                                bottomSheetState = RandomBottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnRemoveMessage,
                                             ),
                                     ).also {
                                         scheduleBottomSheetDismiss()
@@ -224,7 +222,7 @@ class RandomDetailScreenViewModel
                         isLoading = false,
                         bottomSheetData =
                             bottomSheetData.copy(
-                                bottomSheetState = RandomBottomSheetState.onDismiss,
+                                bottomSheetState = BottomSheetState.OnDismiss,
                             ),
                     )
                 }

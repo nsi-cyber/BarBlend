@@ -43,9 +43,7 @@ class DataRepositoryImpl
             daoFlow { database.getFavoriteCocktailDetailFromDao(id) }
                 .map { result -> mapDaoResult(result) { it.toModel() } }
 
-        override suspend fun isFavoriteCocktail(id: String?): Int {
-            return database.isFavoriteCocktail(id)
-        }
+        override suspend fun isFavoriteCocktail(id: String?): Int = database.isFavoriteCocktail(id)
 
         override fun getFavoriteCocktailsFromDao(): Flow<DaoResult<List<CocktailModel?>?>> =
             daoFlow { database.getFavoriteCocktailsFromDao() }

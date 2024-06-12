@@ -1,21 +1,13 @@
 package com.nsicyber.barblend.presentation.explore
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,22 +21,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.nsicyber.barblend.R
-import com.nsicyber.barblend.data.model.CocktailModel
-import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
-import com.nsicyber.barblend.presentation.components.LatestCocktailCardView
-import com.nsicyber.barblend.presentation.components.PopularCocktailCardView
 
 @Composable
 fun ExploreScreen(
@@ -137,12 +122,18 @@ fun ExploreScreen(
                     item {
                         if (cocktails.data.popularCocktails.isNullOrEmpty() && cocktails.data.latestCocktails.isNullOrEmpty()) {
                             Box(
+                                contentAlignment = Alignment.Center,
                                 modifier =
-                                    Modifier.clickable {
-                                        viewModel.onEvent(ExploreScreenEvent.StartPage)
-                                    }.padding(24.dp),
+                                    Modifier
+                                        .clickable {
+                                            viewModel.onEvent(ExploreScreenEvent.StartPage)
+                                        }
+                                        .padding(24.dp),
                             ) {
-                                Text(text = "Error while fetching data. Click to retry")
+                                Text(
+                                    textAlign = TextAlign.Center,
+                                    text = stringResource(id = R.string.error_message_explore),
+                                )
                             }
                         }
                     }
@@ -150,104 +141,4 @@ fun ExploreScreen(
             }
         }
     }, isLoading = cocktails.isLoading)
-}
-
-@Composable
-fun PopularCocktailsSection(
-    popularCocktails: List<CocktailModel?>?,
-    onClick: (id: String) -> Unit,
-) {
-    if (popularCocktails?.isNotEmpty() == true) {
-        Column(
-            modifier = Modifier.padding(start = 16.dp, top = 32.dp, bottom = 8.dp),
-        ) {
-            Text(
-                text = stringResource(id = R.string.popular_cocktails_title),
-                style = BarBlendTextStyles.subheader,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Text(
-                text = stringResource(id = R.string.popular_cocktails_subtitle),
-                style = BarBlendTextStyles.header,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(start = 16.dp),
-        ) {
-            items(
-                items = popularCocktails.orEmpty(),
-                key = { item -> item?.id.toString() },
-            ) { model ->
-                PopularCocktailCardView(model = model) { redirectId ->
-                    onClick(redirectId)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun SearchSection(onClick: () -> Unit) {
-    Text(
-        text = stringResource(id = R.string.search_title),
-        style = BarBlendTextStyles.header,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp),
-    )
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier =
-            Modifier
-                .padding(vertical = 16.dp)
-                .height(50.dp)
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .shadow(4.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(Color.White)
-                .clickable { onClick() },
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = stringResource(id = R.string.search_placeholder),
-                style = BarBlendTextStyles.body,
-                color = Color.Black,
-                modifier = Modifier.wrapContentSize(),
-            )
-
-            Image(
-                modifier = Modifier.size(24.dp),
-                painter = painterResource(R.drawable.ic_search),
-                contentDescription = "Search Icon",
-            )
-        }
-    }
-}
-
-@Composable
-fun LatestCocktailsSectionTitle() {
-    Column(
-        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
-    ) {
-        Text(
-            text = stringResource(id = R.string.last_added_title),
-            style = BarBlendTextStyles.subheader,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Text(
-            text = stringResource(id = R.string.last_added_subtitle),
-            style = BarBlendTextStyles.header,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
 }

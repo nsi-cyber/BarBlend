@@ -32,12 +32,26 @@
 
 
     <string name="bottom_sheet_placeholder">Add you suggestions here…</string>
-    <string name="bottom_sheet_button">Add you suggestions here…</string>
+    <string name="bottom_sheet_text">Add this cocktail to favorite</string>
+    <string name="bottom_sheet_button">Add Favorite</string>
+    <string name="bottom_sheet_favorite_success_message">Cocktail added to favorite</string>
+    <string name="bottom_sheet_remove_success_message">Cocktail removed from favorite</string>
+    <string name="bottom_sheet_error_message">Error: Try Again</string>
     <string name="feeling_luck_button_title">Feeling</string>
     <string name="feeling_luck_button_subtitle">Lucky</string>
 
 
     <string name="ic_search_cd">Search Icon</string>
     <string name="ic_favorite_cd">Favorite Icon</string>
+
+
+    <string name="content_desc_cocktail_image">Cocktail Image</string>
+    <string name="content_desc_add_favorite">Add/Remove Favorite Button</string>
+    <string name="error_message_explore">Error while fetching data. Click to retry</string>
+
+
+    <string name="toast_message_on_connected">Internet connection is established</string>
+    <string name="toast_message_on_disconnected">Internet connection is lost</string>
+
 
 </resources>

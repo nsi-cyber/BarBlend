@@ -4,8 +4,8 @@ agp = "8.3.2"
 coilCompose = "2.6.0"
 compiler = "1.1.1"
 datastorePreferences = "1.1.1"
-hiltAndroid = "2.48.1"
-hiltAndroidCompiler = "2.48.1"
+hiltAndroid = "2.51.1"
+hiltAndroidCompiler = "2.51.1"
 hiltNavigationComposeVersion = "1.2.0"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
@@ -17,6 +17,7 @@ lifecycleRuntimeKtx = "2.8.1"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
 hilt = "2.51.1"
+lottieCompose = "5.2.0"
 retrofit2 = "2.11.0"
 okhttp3 = "4.12.0"
 navigationRuntimeKtx = "2.7.7"
@@ -57,6 +58,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 retrofit2-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
 retrofit2-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
 okhttp3-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nsicyber.barblend.common.DaoResult
 import com.nsicyber.barblend.domain.useCase.database.GetCocktailDetailsUseCase
 import com.nsicyber.barblend.domain.useCase.database.RemoveCocktailUseCase
+import com.nsicyber.barblend.presentation.detail.BottomSheetState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,8 +67,7 @@ class FavoriteDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Error While Removing",
-                                                bottomSheetState = FavoriteDetailBottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnError,
                                             ),
                                     ).also {
                                         scheduleBottomSheetDismiss()
@@ -81,8 +81,7 @@ class FavoriteDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Cocktail Removed from Favorites",
-                                                bottomSheetState = FavoriteDetailBottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnRemoveMessage,
                                             ),
                                     ).also {
                                         scheduleBottomSheetDismiss()
@@ -100,8 +99,7 @@ class FavoriteDetailScreenViewModel
                 copy(
                     bottomSheetData =
                         bottomSheetData.copy(
-                            bottomSheetState = FavoriteDetailBottomSheetState.onDismiss,
-                            text = null,
+                            bottomSheetState = BottomSheetState.OnDismiss,
                             suggestion = null,
                         ),
                 )
@@ -119,7 +117,7 @@ class FavoriteDetailScreenViewModel
                     copy(
                         bottomSheetData =
                             bottomSheetData.copy(
-                                bottomSheetState = FavoriteDetailBottomSheetState.onDismiss,
+                                bottomSheetState = BottomSheetState.OnDismiss,
                             ),
                     )
                 }

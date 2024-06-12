@@ -44,8 +44,7 @@ class CocktailDetailScreenViewModel
                         copy(
                             bottomSheetData =
                                 bottomSheetData.copy(
-                                    text = "Save cocktail to Favorite List",
-                                    bottomSheetState = BottomSheetState.onInput,
+                                    bottomSheetState = BottomSheetState.OnInput,
                                 ),
                         )
                     }
@@ -68,8 +67,7 @@ class CocktailDetailScreenViewModel
                         copy(
                             bottomSheetData =
                                 bottomSheetData.copy(
-                                    bottomSheetState = BottomSheetState.onDismiss,
-                                    text = null,
+                                    bottomSheetState = BottomSheetState.OnDismiss,
                                     suggestion = null,
                                 ),
                         )
@@ -155,8 +153,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Error While Favoriting",
-                                                bottomSheetState = BottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnError,
                                             ),
                                     )
                                 }
@@ -166,7 +163,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                bottomSheetState = BottomSheetState.onDismiss,
+                                                bottomSheetState = BottomSheetState.OnDismiss,
                                             ),
                                     )
                                 }
@@ -179,8 +176,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Cocktail Added to Favorites",
-                                                bottomSheetState = BottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnFavoriteMessage,
                                             ),
                                     )
                                 }
@@ -190,7 +186,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                bottomSheetState = BottomSheetState.onDismiss,
+                                                bottomSheetState = BottomSheetState.OnDismiss,
                                             ),
                                     )
                                 }
@@ -212,8 +208,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Error While Removing",
-                                                bottomSheetState = BottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnError,
                                             ),
                                     )
                                 }
@@ -223,7 +218,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                bottomSheetState = BottomSheetState.onDismiss,
+                                                bottomSheetState = BottomSheetState.OnDismiss,
                                             ),
                                     )
                                 }
@@ -236,8 +231,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                text = "Cocktail Removed from Favorites",
-                                                bottomSheetState = BottomSheetState.onMessage,
+                                                bottomSheetState = BottomSheetState.OnFavoriteMessage,
                                             ),
                                     )
                                 }
@@ -247,7 +241,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                bottomSheetState = BottomSheetState.onDismiss,
+                                                bottomSheetState = BottomSheetState.OnDismiss,
                                             ),
                                     )
                                 }

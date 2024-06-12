@@ -17,8 +17,7 @@ data class CocktailDetailScreenData(
 
 data class BottomSheetData(
     var suggestion: String? = null,
-    val text: String? = null,
-    val bottomSheetState: BottomSheetState = BottomSheetState.onDismiss,
+    val bottomSheetState: BottomSheetState = BottomSheetState.OnDismiss,
 )
 
-enum class BottomSheetState { onInput, onDismiss, onMessage }
+enum class BottomSheetState { OnInput, OnDismiss, OnFavoriteMessage, OnRemoveMessage, OnError }

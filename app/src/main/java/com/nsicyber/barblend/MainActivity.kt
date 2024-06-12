@@ -52,13 +52,21 @@ class MainActivity : ComponentActivity(), InternetConnectionCallback {
     override fun onConnected() {
         if (isConnected == false) {
             isConnected = true
-            Toast.makeText(this, "Internet connection is established", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                this.getText(R.string.toast_message_on_connected),
+                Toast.LENGTH_SHORT,
+            ).show()
         }
     }
 
     override fun onDisconnected() {
         isConnected = false
-        Toast.makeText(this, "Internet connection is lost", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this,
+            this.getText(R.string.toast_message_on_disconnected),
+            Toast.LENGTH_LONG,
+        ).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
