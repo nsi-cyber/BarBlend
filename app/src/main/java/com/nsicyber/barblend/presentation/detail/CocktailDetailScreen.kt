@@ -125,6 +125,7 @@ fun CocktailDetailScreen(
             sheetPeekHeight = 0.dp,
         ) {
             Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.verticalScroll(rememberScrollState()),
             ) {
                 Box(

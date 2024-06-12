@@ -125,6 +125,7 @@ fun FavoriteDetailScreen(
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.verticalScroll(rememberScrollState()),
                 ) {
                     Box(
