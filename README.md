@@ -2,6 +2,12 @@
 
 BarBlend is a mobile application that allows you to discover cocktail recipes, save your favorite cocktails, and explore new ones. The app fetches cocktail data via various API calls and stores your favorite and recent cocktails in a local database.
 
+<img src="https://cloud.githubusercontent.com/assets/yourgif.gif](https://github.com/nsi-cyber/BarBlend/assets/73956606/900996df-ac88-4160-966d-5cdf19c90b59" width="400" height="790">
+<img src="https://cloud.githubusercontent.com/assets/yourgif.gif](https://github.com/nsi-cyber/BarBlend/assets/73956606/758c2e20-84e3-4fbc-a19c-49b09855af0b" width="400" height="790">
+<img src="https://cloud.githubusercontent.com/assets/yourgif.gif](https://github.com/nsi-cyber/BarBlend/assets/73956606/68366bf4-9329-491d-8fda-c4827c70e95b" width="400" height="790">
+
+
+
 ## Features
 
 - **Cocktail Details**: View the recipe and ingredients of selected cocktails.
