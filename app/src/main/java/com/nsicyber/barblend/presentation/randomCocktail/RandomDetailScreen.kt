@@ -43,13 +43,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.nsicyber.barblend.R
+import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
 import com.nsicyber.barblend.presentation.components.KeywordCardItem
 import kotlinx.coroutines.launch
@@ -219,12 +218,11 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                         ) {
                             Text(
                                 text = cocktails.data.cocktailDetail?.category.orEmpty(),
+                                style = BarBlendTextStyles.body,
                             )
                             Text(
                                 text = cocktails.data.cocktailDetail?.title.orEmpty(),
-                                fontSize = 28.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Bold,
+                                style = BarBlendTextStyles.header,
                                 modifier = Modifier.fillMaxWidth(),
                             )
                         }
@@ -233,10 +231,7 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                             Column {
                                 Text(
                                     text = stringResource(id = R.string.tags_title),
-                                    color = Color.Gray,
-                                    fontSize = 22.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Normal,
+                                    style = BarBlendTextStyles.subheader,
                                     modifier =
                                         Modifier
                                             .fillMaxWidth()
@@ -265,26 +260,19 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
                                 Text(
                                     text = stringResource(id = R.string.prepare_title),
-                                    color = Color.Gray,
-                                    fontSize = 22.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Normal,
+                                    style = BarBlendTextStyles.subheader,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                                 Text(
                                     text = stringResource(id = R.string.prepare_subtitle),
-                                    fontSize = 28.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Bold,
+                                    style = BarBlendTextStyles.header,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                                 Spacer(Modifier.height(8.dp))
 
                                 Text(
                                     text = cocktails.data.cocktailDetail?.instructions.orEmpty(),
-                                    fontSize = 22.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Normal,
+                                    style = BarBlendTextStyles.body,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                             }
@@ -294,17 +282,12 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
                                 Text(
                                     text = stringResource(id = R.string.glass_title),
-                                    color = Color.Gray,
-                                    fontSize = 22.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Normal,
+                                    style = BarBlendTextStyles.subheader,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                                 Text(
                                     text = cocktails.data.cocktailDetail?.glass.orEmpty(),
-                                    fontSize = 28.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Bold,
+                                    style = BarBlendTextStyles.header,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                             }
@@ -321,17 +304,12 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                             ) {
                                 Text(
                                     text = stringResource(id = R.string.ingredients_title),
-                                    color = Color.Gray,
-                                    fontSize = 22.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Normal,
+                                    style = BarBlendTextStyles.subheader,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                                 Text(
                                     text = stringResource(id = R.string.ingredients_subtitle),
-                                    fontSize = 28.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Bold,
+                                    style = BarBlendTextStyles.header,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                                 Spacer(Modifier.height(8.dp))
@@ -352,12 +330,14 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                                                     cocktails.data.cocktailDetail?.ingredients?.get(
                                                         index,
                                                     )?.ingredient.orEmpty(),
+                                                style = BarBlendTextStyles.body,
                                             )
 
                                             Text(
                                                 textAlign = TextAlign.Center,
                                                 modifier = Modifier.weight(1f),
                                                 text = " - ",
+                                                style = BarBlendTextStyles.body,
                                             )
 
                                             Text(
@@ -367,6 +347,7 @@ fun RandomDetailScreen(viewModel: RandomDetailScreenViewModel = hiltViewModel<Ra
                                                     cocktails.data.cocktailDetail?.ingredients?.get(
                                                         index,
                                                     )?.measure.orEmpty(),
+                                                style = BarBlendTextStyles.body,
                                             )
                                         }
                                     }

@@ -34,8 +34,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,6 +41,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.data.model.CocktailModel
+import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
 import com.nsicyber.barblend.presentation.components.LatestCocktailCardView
 import com.nsicyber.barblend.presentation.components.PopularCocktailCardView
@@ -164,17 +163,12 @@ fun PopularCocktailsSection(
         ) {
             Text(
                 text = stringResource(id = R.string.popular_cocktails_title),
-                color = Color.Gray,
-                fontSize = 22.sp,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Normal,
+                style = BarBlendTextStyles.subheader,
                 modifier = Modifier.fillMaxWidth(),
             )
             Text(
                 text = stringResource(id = R.string.popular_cocktails_subtitle),
-                fontSize = 28.sp,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Bold,
+                style = BarBlendTextStyles.header,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -198,9 +192,7 @@ fun PopularCocktailsSection(
 fun SearchSection(onClick: () -> Unit) {
     Text(
         text = stringResource(id = R.string.search_title),
-        fontSize = 28.sp,
-        textAlign = TextAlign.Start,
-        fontWeight = FontWeight.Bold,
+        style = BarBlendTextStyles.header,
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -228,10 +220,8 @@ fun SearchSection(onClick: () -> Unit) {
         ) {
             Text(
                 text = stringResource(id = R.string.search_placeholder),
+                style = BarBlendTextStyles.body,
                 color = Color.Black,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Normal,
                 modifier = Modifier.wrapContentSize(),
             )
 
@@ -251,17 +241,12 @@ fun LatestCocktailsSectionTitle() {
     ) {
         Text(
             text = stringResource(id = R.string.last_added_title),
-            color = Color.Gray,
-            fontSize = 22.sp,
-            textAlign = TextAlign.Start,
-            fontWeight = FontWeight.Normal,
+            style = BarBlendTextStyles.subheader,
             modifier = Modifier.fillMaxWidth(),
         )
         Text(
             text = stringResource(id = R.string.last_added_subtitle),
-            fontSize = 28.sp,
-            textAlign = TextAlign.Start,
-            fontWeight = FontWeight.Bold,
+            style = BarBlendTextStyles.header,
             modifier = Modifier.fillMaxWidth(),
         )
     }

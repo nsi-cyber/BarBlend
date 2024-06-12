@@ -16,14 +16,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nsicyber.barblend.R
+import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
 import com.nsicyber.barblend.presentation.components.SearchCocktailCardView
 
@@ -48,17 +46,12 @@ fun FavoriteListScreen(
             Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
                 Text(
                     text = stringResource(id = R.string.favorite_title),
-                    color = Color.Gray,
-                    fontSize = 22.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Normal,
+                    style = BarBlendTextStyles.subheader,
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Text(
                     text = stringResource(id = R.string.favorite_subtitle),
-                    fontSize = 28.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold,
+                    style = BarBlendTextStyles.header,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -73,15 +66,13 @@ fun FavoriteListScreen(
                     ) {
                         Text(
                             text = stringResource(id = R.string.no_favorite_title),
-                            fontSize = 28.sp,
+                            style = BarBlendTextStyles.header,
                             textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
                         )
                         Text(
                             text = stringResource(id = R.string.no_favorite_subtitle),
-                            fontSize = 18.sp,
+                            style = BarBlendTextStyles.body,
                             textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Normal,
                         )
                     }
                 }

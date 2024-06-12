@@ -37,16 +37,15 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.nsicyber.barblend.R
 import com.nsicyber.barblend.data.model.CocktailModel
+import com.nsicyber.barblend.presentation.components.BarBlendTextStyles
 import com.nsicyber.barblend.presentation.components.BaseView
 import com.nsicyber.barblend.presentation.components.SearchCocktailCardView
 
@@ -165,17 +164,12 @@ fun SearchScreen(
                 Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
                     Text(
                         text = stringResource(id = R.string.recent_title),
-                        color = Color.Gray,
-                        fontSize = 22.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Normal,
+                        style = BarBlendTextStyles.subheader,
                         modifier = Modifier.fillMaxWidth(),
                     )
                     Text(
                         text = stringResource(id = R.string.recent_subtitle),
-                        fontSize = 28.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold,
+                        style = BarBlendTextStyles.header,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -187,15 +181,13 @@ fun SearchScreen(
                         ) {
                             Text(
                                 text = stringResource(id = R.string.no_recent_title),
-                                fontSize = 28.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Bold,
+                                style = BarBlendTextStyles.header,
+                                textAlign = TextAlign.Center,
                             )
                             Text(
                                 text = stringResource(id = R.string.no_recent_subtitle),
-                                fontSize = 18.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
+                                style = BarBlendTextStyles.body,
+                                textAlign = TextAlign.Center,
                             )
                         }
                     }
@@ -218,17 +210,12 @@ fun SearchScreen(
                 Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) {
                     Text(
                         text = stringResource(id = R.string.search_title),
-                        color = Color.Gray,
-                        fontSize = 22.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Normal,
+                        style = BarBlendTextStyles.subheader,
                         modifier = Modifier.fillMaxWidth(),
                     )
                     Text(
                         text = stringResource(id = R.string.search_subtitle),
-                        fontSize = 28.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold,
+                        style = BarBlendTextStyles.header,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -240,15 +227,13 @@ fun SearchScreen(
                         ) {
                             Text(
                                 text = stringResource(id = R.string.no_result_title),
-                                fontSize = 28.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Bold,
+                                style = BarBlendTextStyles.header,
+                                textAlign = TextAlign.Center,
                             )
                             Text(
                                 text = stringResource(id = R.string.no_result_subtitle),
-                                fontSize = 18.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Normal,
+                                style = BarBlendTextStyles.body,
+                                textAlign = TextAlign.Center,
                             )
                         }
                     }
@@ -298,8 +283,7 @@ fun WideMiniCocktailCardView(
                 Text(
                     maxLines = 2,
                     text = model?.title.toString(),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Normal,
+                    style = BarBlendTextStyles.body,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
