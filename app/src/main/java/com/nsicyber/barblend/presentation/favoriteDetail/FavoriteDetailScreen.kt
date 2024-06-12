@@ -192,7 +192,7 @@ fun FavoriteDetailScreen(
                             )
                         }
 
-                        cocktails.data.cocktailDetail?.tags?.takeIf { it.isNotEmpty() }.let {
+                        cocktails.data.cocktailDetail?.tags?.takeIf { it.isNotEmpty() }?.let {
                             Column {
                                 Text(
                                     text = stringResource(id = R.string.tags_title),
@@ -221,27 +221,26 @@ fun FavoriteDetailScreen(
                             }
                         }
 
-                        cocktails.data.cocktailDetail?.suggestion?.takeIf { it.isNotEmpty() }
-                            .let { suggestionText ->
-                                Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                                    Text(
-                                        text = stringResource(id = R.string.suggestion_title),
-                                        style = BarBlendTextStyles.subheader,
-                                        modifier = Modifier.fillMaxWidth(),
-                                    )
-                                    Text(
-                                        text = stringResource(id = R.string.suggestion_subtitle),
-                                        style = BarBlendTextStyles.header,
-                                        modifier = Modifier.fillMaxWidth(),
-                                    )
-                                    Spacer(Modifier.height(8.dp))
-                                    Text(
-                                        text = suggestionText.orEmpty(),
-                                        style = BarBlendTextStyles.body,
-                                        modifier = Modifier.fillMaxWidth(),
-                                    )
-                                }
+                        cocktails.data.cocktailDetail?.suggestion?.takeIf { it.isNotEmpty() }?.let { suggestionText ->
+                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+                                Text(
+                                    text = stringResource(id = R.string.suggestion_title),
+                                    style = BarBlendTextStyles.subheader,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.suggestion_subtitle),
+                                    style = BarBlendTextStyles.header,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    text = suggestionText.orEmpty(),
+                                    style = BarBlendTextStyles.body,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
                             }
+                        }
                     }
 
                     cocktails.data.cocktailDetail?.instructions?.takeIf { it.isNotEmpty() }?.let {
