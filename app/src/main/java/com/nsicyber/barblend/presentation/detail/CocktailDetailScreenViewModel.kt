@@ -231,7 +231,7 @@ class CocktailDetailScreenViewModel
                                         isLoading = false,
                                         bottomSheetData =
                                             bottomSheetData.copy(
-                                                bottomSheetState = BottomSheetState.OnFavoriteMessage,
+                                                bottomSheetState = BottomSheetState.OnRemoveMessage,
                                             ),
                                     )
                                 }
