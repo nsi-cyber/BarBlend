@@ -2,11 +2,16 @@
 
 BarBlend is a mobile application that allows you to discover cocktail recipes, save your favorite cocktails, and explore new ones. The app fetches cocktail data via various API calls and stores your favorite and recent cocktails in a local database.
 
-<img src="https://cloud.githubusercontent.com/assets/yourgif.gif](https://github.com/nsi-cyber/BarBlend/assets/73956606/900996df-ac88-4160-966d-5cdf19c90b59" width="400" height="790">
-<img src="https://cloud.githubusercontent.com/assets/yourgif.gif](https://github.com/nsi-cyber/BarBlend/assets/73956606/758c2e20-84e3-4fbc-a19c-49b09855af0b" width="400" height="790">
-<img src="https://cloud.githubusercontent.com/assets/yourgif.gif](https://github.com/nsi-cyber/BarBlend/assets/73956606/68366bf4-9329-491d-8fda-c4827c70e95b" width="400" height="790">
+![WhatsApp Image 2024-06-12 at 13 57 02](https://github.com/nsi-cyber/BarBlend/assets/73956606/db0a3791-cf3a-4f9d-b327-227c4ca98ea0)
+![WhatsApp Image 2024-06-12 at 13 57 02 (1)](https://github.com/nsi-cyber/BarBlend/assets/73956606/2955a531-97fd-4faf-b159-b8a288219646)
+![WhatsApp Image 2024-06-12 at 13 57 02 (2)](https://github.com/nsi-cyber/BarBlend/assets/73956606/0f81a8c1-e9a3-420f-bfa2-7be30e2feea4)
 
 
+<p align="center">
+  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/db0a3791-cf3a-4f9d-b327-227c4ca98ea0" width="150" />
+  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/2955a531-97fd-4faf-b159-b8a288219646" width="150" />
+  <img src="https://github.com/nsi-cyber/BarBlend/assets/73956606/0f81a8c1-e9a3-420f-bfa2-7be30e2feea4" width="150" />
+</p>
 
 ## Features
 
