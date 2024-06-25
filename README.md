@@ -71,3 +71,8 @@ The app follows the MVVM (Model-View-ViewModel) architecture pattern along with 
 
 - **Notification Manager**: Used to send notifications to the user about new and popular cocktails.
 
+
+### To Use...
+
+- **IMPORTANT**: You need to get api key from [rapidapi coc](https://rapidapi.com/thecocktaildb/api/the-cocktail-db/) to use app and add it into CMakeList file in app/cpp.
+
