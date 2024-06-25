@@ -74,5 +74,5 @@ The app follows the MVVM (Model-View-ViewModel) architecture pattern along with 
 
 ### To Use...
 
-- **IMPORTANT**: You need to get api key from [rapidapi coc](https://rapidapi.com/thecocktaildb/api/the-cocktail-db/) to use app and add it into CMakeList file in app/cpp.
+- **IMPORTANT**: You need to get api key from [rapidapi coc](https://rapidapi.com/thecocktaildb/api/the-cocktail-db/) to use app and add it into libnative-lib.cpp file in app/cpp.
 
